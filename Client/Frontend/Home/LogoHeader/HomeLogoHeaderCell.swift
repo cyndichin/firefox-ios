@@ -65,7 +65,7 @@ class HomeLogoHeaderCell: UICollectionViewCell, ReusableCell {
         contentView.addSubview(containerView)
 
         // TODO: Felt Privacy - Private mode in Redux to follow
-        let isiPadAndPrivate = UIDevice.current.userInterfaceIdiom == .pad && false
+        let isiPadAndPrivate = UIDevice.current.userInterfaceIdiom == .pad && true
         let logoSizeConstant = isiPadAndPrivate ? UX.Logo.iPadImageSize : UX.Logo.iPhoneImageSize
         let topAnchorConstant = isiPadAndPrivate ? UX.Logo.iPadTopConstant : UX.Logo.iPhoneTopConstant
         let textImageWidthConstant = isiPadAndPrivate ? UX.TextImage.iPadWidth : UX.TextImage.iPhoneWidth

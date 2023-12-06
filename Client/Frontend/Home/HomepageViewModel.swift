@@ -114,7 +114,7 @@ class HomepageViewModel: FeatureFlaggable {
         self.theme = theme
         self.logger = logger
 
-        self.headerViewModel = HomeLogoHeaderViewModel(profile: profile, theme: theme)
+        self.headerViewModel = HomeLogoHeaderViewModel(theme: theme)
         let messageCardAdaptor = MessageCardDataAdaptorImplementation()
         self.messageCardViewModel = HomepageMessageCardViewModel(dataAdaptor: messageCardAdaptor, theme: theme)
         messageCardAdaptor.delegate = messageCardViewModel

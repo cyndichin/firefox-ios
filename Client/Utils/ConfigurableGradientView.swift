@@ -37,4 +37,8 @@ public class ConfigurableGradientView: UIView {
         gradientLayer.startPoint = startPoint
         gradientLayer.endPoint = endPoint
     }
+
+    override public func layoutSubviews() {
+        gradientLayer.frame = self.bounds
+    }
 }

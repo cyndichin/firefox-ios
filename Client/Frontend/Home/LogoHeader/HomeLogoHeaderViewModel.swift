@@ -11,12 +11,10 @@ class HomeLogoHeaderViewModel {
         static let bottomSpacing: CGFloat = 30
     }
 
-    private let profile: Profile
     var onTapAction: ((UIButton) -> Void)?
     var theme: Theme
 
-    init(profile: Profile, theme: Theme) {
-        self.profile = profile
+    init(theme: Theme) {
         self.theme = theme
     }
 }

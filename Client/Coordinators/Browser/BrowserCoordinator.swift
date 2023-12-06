@@ -24,7 +24,7 @@ class BrowserCoordinator: BaseCoordinator,
     var browserViewController: BrowserViewController
     var webviewController: WebviewViewController?
     var homepageViewController: HomepageViewController?
-    var privateViewController: WebviewViewController?
+    var privateViewController: PrivateHomepageViewController?
 
     private var profile: Profile
     private let tabManager: TabManager
@@ -119,13 +119,12 @@ class BrowserCoordinator: BaseCoordinator,
     }
 
     func showPrivateHomepage() {
-//        let privateHomepageController = HomepageViewController()
-//
-//        guard browserViewController.embedContent(privateHomepageController) else {
-//            // Log error
-//            return
-//        }
-//        self.privateViewController = privateHomepageController
+        let privateHomepageController = PrivateHomepageViewController()
+        guard browserViewController.embedContent(privateHomepageController) else {
+            logger.log("Unable to embed private homepage", level: .debug, category: .coordinator)
+            return
+        }
+        self.privateViewController = privateHomepageController
 //        privateHomepageController.scrollToTop()
     }
 

@@ -4,7 +4,7 @@
 
 import Foundation
 
-class TabsSectionManager {
+class TabsSectionManager: SectionManager {
     struct UX {
         static let cellEstimatedHeight: CGFloat = 200
         static let cardSpacing: CGFloat = 16

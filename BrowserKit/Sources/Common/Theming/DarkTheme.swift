@@ -14,7 +14,7 @@ public struct DarkTheme: Theme {
 private struct DarkColourPalette: ThemeColourPalette {
     // MARK: - Layers
     var layer1: UIColor = FXColors.DarkGrey60
-    var layer2: UIColor = FXColors.DarkGrey30
+    var layer2: UIColor = FXColors.Ink50
     var layer3: UIColor = FXColors.DarkGrey80
     var layer4: UIColor = FXColors.DarkGrey20.withAlphaComponent(0.7)
     var layer5: UIColor = FXColors.DarkGrey40
@@ -30,9 +30,9 @@ private struct DarkColourPalette: ThemeColourPalette {
     var layerLightGrey30: UIColor = FXColors.LightGrey30
     var layerSepia: UIColor = FXColors.Orange05
     var layerHomepage = Gradient(colors: [
-        FXColors.DarkGrey60.withAlphaComponent(1),
-        FXColors.DarkGrey60.withAlphaComponent(1),
-        FXColors.DarkGrey60.withAlphaComponent(1)
+        FXColors.Ink05,
+        FXColors.Violet80,
+        FXColors.Purple70
     ])
     var layerInfo: UIColor = FXColors.Blue60.withAlphaComponent(0.8)
     var layerConfirmation: UIColor = FXColors.Green80
