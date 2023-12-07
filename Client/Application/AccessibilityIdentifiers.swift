@@ -120,6 +120,11 @@ public struct AccessibilityIdentifiers {
 
     struct PrivateMode {
         static let dimmingView = "PrivateMode.DimmingView"
+        struct Homepage {
+            static let title = "PrivateMode.Homepage.Title"
+            static let body = "PrivateMode.Homepage.Body"
+            static let link = "PrivateMode.Homepage.Link"
+        }
     }
 
     struct Shopping {

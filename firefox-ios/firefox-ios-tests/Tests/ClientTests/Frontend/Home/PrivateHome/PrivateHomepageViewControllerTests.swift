@@ -6,7 +6,6 @@ import XCTest
 @testable import Client
 
 final class PrivateHomepageViewControllerTests: XCTestCase {
-
     override func setUp() {
         super.setUp()
     }
@@ -20,5 +19,4 @@ final class PrivateHomepageViewControllerTests: XCTestCase {
         trackForMemoryLeaks(privateHomeViewController)
         XCTAssertEqual(privateHomeViewController.contentType, .privateHomepage)
     }
-
 }

@@ -7,6 +7,8 @@ import Common
 import ComponentLibrary
 
 class PrivateMessageCardCell: UICollectionViewCell, ReusableCell, ThemeApplicable {
+    typealias a11y = AccessibilityIdentifiers.PrivateMode.Homepage
+
     struct PrivateMessageCard: Hashable {
         let title: String
         let body: String
@@ -18,12 +20,10 @@ class PrivateMessageCardCell: UICollectionViewCell, ReusableCell, ThemeApplicabl
     }
 
     enum UX {
-        static let contentStackViewSpacing: CGFloat = 8
-        static let contentStackTopPadding: CGFloat = 16
-        static let contentStackBottomPadding: CGFloat = 16
-        static let contentStackLeadingPadding: CGFloat = 16
-        static let contentStackTrailingPadding: CGFloat = 16
+        static let textSpacing: CGFloat = 8
+        static let standardSpacing: CGFloat = 16
         static let labelSize: CGFloat = 15
+        static let cardSizeMaxWidth: CGFloat = 560
     }
 
     private lazy var cardContainer: ShadowCardView = .build()
@@ -31,7 +31,9 @@ class PrivateMessageCardCell: UICollectionViewCell, ReusableCell, ThemeApplicabl
     private lazy var mainView: UIView = .build()
     private lazy var contentStackView: UIStackView = .build { stackView in
         stackView.axis = .vertical
-        stackView.spacing = UX.contentStackViewSpacing
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.spacing = UX.textSpacing
     }
 
     private lazy var headerLabel: UILabel = .build { label in
@@ -40,6 +42,8 @@ class PrivateMessageCardCell: UICollectionViewCell, ReusableCell, ThemeApplicabl
             size: UX.labelSize
         )
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+        label.accessibilityIdentifier = a11y.title
     }
 
     private lazy var bodyLabel: UILabel = .build { label in
@@ -48,6 +52,8 @@ class PrivateMessageCardCell: UICollectionViewCell, ReusableCell, ThemeApplicabl
             size: UX.labelSize
         )
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+        label.accessibilityIdentifier = a11y.body
     }
 
     private lazy var linkLabel: UILabel = .build { label in
@@ -56,6 +62,8 @@ class PrivateMessageCardCell: UICollectionViewCell, ReusableCell, ThemeApplicabl
             size: UX.labelSize
         )
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+        label.accessibilityIdentifier = a11y.link
     }
 
     override init(frame: CGRect) {
@@ -78,26 +86,19 @@ class PrivateMessageCardCell: UICollectionViewCell, ReusableCell, ThemeApplicabl
     }
 
     private func setupLayout() {
-        addSubviews(cardContainer, mainView)
-        mainView.addSubview(contentStackView)
         contentStackView.addArrangedSubview(headerLabel)
         contentStackView.addArrangedSubview(bodyLabel)
         contentStackView.addArrangedSubview(linkLabel)
+        mainView.addSubview(contentStackView)
+        contentView.addSubview(mainView)
 
         NSLayoutConstraint.activate([
-            cardContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
-            cardContainer.topAnchor.constraint(equalTo: topAnchor),
-            cardContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
-            cardContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
-
-            contentStackView.topAnchor.constraint(equalTo: cardContainer.topAnchor,
-                                                  constant: UX.contentStackTopPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: cardContainer.bottomAnchor,
-                                                     constant: -UX.contentStackBottomPadding),
-            contentStackView.leadingAnchor.constraint(equalTo: cardContainer.leadingAnchor,
-                                                      constant: UX.contentStackLeadingPadding),
-            contentStackView.trailingAnchor.constraint(equalTo: cardContainer.trailingAnchor,
-                                                       constant: -UX.contentStackTrailingPadding),
+            mainView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+            mainView.topAnchor.constraint(equalTo: topAnchor),
+            mainView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+            mainView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            mainView.centerXAnchor.constraint(equalTo: centerXAnchor),
+//            mainView.widthAnchor.constraint(equalToConstant: UX.cardSizeMaxWidth).priority(.defaultHigh),
         ])
     }
 }

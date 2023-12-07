@@ -42,13 +42,15 @@ final class PrivateHomepageSectionManager {
                                                heightDimension: .estimated(180))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
 
-        let horizontalInset = HomepageViewModel.UX.leadingInset(traitCollection: layoutEnvironment.traitCollection)
-
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: UX.spacingBetweenSections,
+
+        let horizontalInset = HomepageViewModel.UX.leadingInset(traitCollection: layoutEnvironment.traitCollection)
+        
+        section.contentInsets = NSDirectionalEdgeInsets(top: HomepageViewModel.UX.spacingBetweenSections,
                                                         leading: horizontalInset,
                                                         bottom: 0,
                                                         trailing: horizontalInset)
+
         return section
     }
 }
