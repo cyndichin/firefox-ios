@@ -4779,6 +4779,12 @@ extension String {
         tableName: nil,
         value: nil,
         comment: "Accessibility label for the navigation toolbar displayed at the bottom of the screen.")
+    // Double check with wiki
+    public static let TabToolbarFireAccessibilityLabel = MZLocalizedString(
+        key: "TabToolbar.Accessibility.Fire.v122",
+        tableName: "TabToolbar",
+        value: "Fire",
+        comment: "Accessibility Label for the tab toolbar Fire button")
 }
 
 // MARK: - Tab Tray v1

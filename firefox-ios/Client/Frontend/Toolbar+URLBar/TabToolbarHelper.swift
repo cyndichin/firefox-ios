@@ -51,6 +51,7 @@ enum MiddleButtonState {
     case stop
     case search
     case home
+    case fire
 }
 
 @objcMembers
@@ -62,10 +63,18 @@ open class TabToolbarHelper: NSObject {
     let ImageNewTab = UIImage.templateImageNamed(StandardImageIdentifiers.Large.plus)
     let ImageHome = UIImage.templateImageNamed(StandardImageIdentifiers.Large.home)
     let ImageBookmark = UIImage.templateImageNamed(StandardImageIdentifiers.Large.bookmarkTrayFill)
+    let ImageFire = UIImage.templateImageNamed(StandardImageIdentifiers.Large.fire)
 
     func setMiddleButtonState(_ state: MiddleButtonState) {
         let device = UIDevice.current.userInterfaceIdiom
         switch (state, device) {
+        case (.fire, _):
+            middleButtonState = .fire
+            toolbar.multiStateButton.setImage(ImageFire, for: .normal)
+            toolbar.multiStateButton.accessibilityLabel = .TabToolbarFireAccessibilityLabel
+            toolbar.multiStateButton.largeContentTitle = .TabToolbarFireAccessibilityLabel
+            toolbar.multiStateButton.largeContentImage = ImageFire
+            toolbar.multiStateButton.accessibilityIdentifier = AccessibilityIdentifiers.Toolbar.fireButton
         case (.search, _):
             middleButtonState = .search
             toolbar.multiStateButton.setImage(ImageSearch, for: .normal)
