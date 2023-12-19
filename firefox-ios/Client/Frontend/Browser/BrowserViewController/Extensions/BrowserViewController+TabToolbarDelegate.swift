@@ -21,7 +21,22 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     func tabToolbarDidPressFire(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         // TODO: Felt Deletion - https://mozilla-hub.atlassian.net/browse/FXIOS-7869
-        print("fireeeee")
+        let alert = UIAlertController(title: .Alerts.FeltDeletion.Title, message: .Alerts.FeltDeletion.Body, preferredStyle: .alert)
+        let confirmationAction = UIAlertAction(title: .Alerts.FeltDeletion.ConfirmButton, style: UIAlertAction.Style.destructive, handler: {_ in
+            self.clearPrivateData()
+            SimpleToast().showAlertWithText(
+                .FirefoxHomepage.FeltDeletion.ToastTitle,
+                bottomContainer: self.contentContainer,
+                theme: self.themeManager.currentTheme)
+        })
+        let cancelAction = UIAlertAction(title: .Alerts.FeltDeletion.CancelButton, style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(confirmationAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
+
+    private func clearPrivateData() {
+       print("clear data and close tabs")
     }
 
     func tabToolbarDidPressLibrary(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
