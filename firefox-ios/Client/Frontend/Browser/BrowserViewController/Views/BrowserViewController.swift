@@ -326,6 +326,7 @@ class BrowserViewController: UIViewController,
             toolbar.tabToolbarDelegate = self
             toolbar.applyUIMode(isPrivate: tabManager.selectedTab?.isPrivate ?? false, theme: themeManager.currentTheme)
             toolbar.applyTheme(theme: themeManager.currentTheme)
+            handleMiddleButtonState(currentMiddleButtonState ?? .search)
             toolbar.updateMiddleButtonState(currentMiddleButtonState ?? .search)
             updateTabCountUsingTabManager(self.tabManager)
         } else {
@@ -1251,7 +1252,7 @@ class BrowserViewController: UIViewController,
         // No tab
         guard let tab = tabManager.selectedTab else {
             urlBar.locationView.reloadButton.reloadButtonState = .disabled
-            navigationToolbar.updateMiddleButtonState(state)
+            handleMiddleButtonState(state)
             currentMiddleButtonState = state
             return
         }
@@ -1259,7 +1260,7 @@ class BrowserViewController: UIViewController,
         // Tab with starting page
         if tab.isURLStartingPage {
             urlBar.locationView.reloadButton.reloadButtonState = .disabled
-            navigationToolbar.updateMiddleButtonState(state)
+            handleMiddleButtonState(state)
             currentMiddleButtonState = state
             return
         }
@@ -1270,11 +1271,20 @@ class BrowserViewController: UIViewController,
             state = isLoading ? .stop : .reload
         }
 
-        navigationToolbar.updateMiddleButtonState(state)
+        handleMiddleButtonState(state)
         if !toolbar.isHidden {
             urlBar.locationView.reloadButton.reloadButtonState = isLoading ? .stop : .reload
         }
         currentMiddleButtonState = state
+    }
+
+    private func handleMiddleButtonState(_ state: MiddleButtonState) {
+        let isPrivate = browserViewControllerState?.usePrivateHomepage ?? false
+        guard let isPrivate = tabManager.selectedTab?.isPrivate, !isPrivate else {
+            navigationToolbar.updateMiddleButtonState(.fire)
+            return
+        }
+        navigationToolbar.updateMiddleButtonState(state)
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
