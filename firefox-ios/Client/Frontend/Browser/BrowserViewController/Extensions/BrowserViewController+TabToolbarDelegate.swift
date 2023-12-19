@@ -24,10 +24,11 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
         let alert = UIAlertController(title: .Alerts.FeltDeletion.Title, message: .Alerts.FeltDeletion.Body, preferredStyle: .alert)
         let confirmationAction = UIAlertAction(title: .Alerts.FeltDeletion.ConfirmButton, style: UIAlertAction.Style.destructive, handler: {_ in
             self.clearPrivateData()
-            SimpleToast().showAlertWithText(
-                .FirefoxHomepage.FeltDeletion.ToastTitle,
-                bottomContainer: self.contentContainer,
-                theme: self.themeManager.currentTheme)
+//
+//            SimpleToast().showAlertWithText(
+//                .FirefoxHomepage.FeltDeletion.ToastTitle,
+//                bottomContainer: self.contentContainer,
+//                theme: self.themeManager.currentTheme)
         })
         let cancelAction = UIAlertAction(title: .Alerts.FeltDeletion.CancelButton, style: UIAlertAction.Style.cancel, handler: nil)
         alert.addAction(confirmationAction)
@@ -37,6 +38,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
 
     private func clearPrivateData() {
        print("clear data and close tabs")
+        store.dispatch(TabPanelAction.closeAllTabs)
     }
 
     func tabToolbarDidPressLibrary(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
