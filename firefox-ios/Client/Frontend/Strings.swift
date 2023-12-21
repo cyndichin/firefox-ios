@@ -1680,6 +1680,11 @@ extension String {
                 tableName: "Settings",
                 value: "Show Search Suggestions",
                 comment: "Label for the `show search suggestions` setting, in the Search Settings page.")
+            public static let ShowSearchSuggestionsSubtitle = MZLocalizedString(
+                key: "Settings.Search.ShowSearchSuggestions.Subtitle.v122",
+                tableName: "Settings",
+                value: "Results from searches, history, bookmarks, and more",
+                comment: "Subtitle for the `Show Search Suggestions` settings switch in the Search Settings page, which explains in more details what the `Show Search Suggestions` setting includes.")
             public static let DefaultSearchEngineTitle = MZLocalizedString(
                 key: "Settings.Search.DefaultSearchEngine.Title.v121",
                 tableName: "Settings",
