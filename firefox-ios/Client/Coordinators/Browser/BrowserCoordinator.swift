@@ -135,7 +135,6 @@ class BrowserCoordinator: BaseCoordinator,
             isPrivate: isPrivate,
             selectNewTab: selectNewTab
         )
-        setupDeletionAnimation()
     }
 
     func show(webView: WKWebView) {
@@ -153,7 +152,6 @@ class BrowserCoordinator: BaseCoordinator,
         }
 
         screenshotService.screenshotableView = webviewController
-        setupDeletionAnimation()
     }
 
     func browserHasLoaded() {
@@ -163,7 +161,6 @@ class BrowserCoordinator: BaseCoordinator,
         if let savedRoute {
             findAndHandle(route: savedRoute)
         }
-        setupDeletionAnimation()
     }
 
     private func getHomepage(inline: Bool,
@@ -270,21 +267,9 @@ class BrowserCoordinator: BaseCoordinator,
     }
 
     private func handleClosePrivateTabs() {
-        setupDeletionAnimation()
         browserViewController.handleClosePrivateTabs()
-        setupDeletionAnimation()
     }
-
-    private func setupDeletionAnimation() {
-        let animationView = FirefoxAnimation.deletion.setup()
-        animationView.translatesAutoresizingMaskIntoConstraints = false
-        browserViewController.view.addSubview(animationView)
-        NSLayoutConstraint.activate([
-            animationView.heightAnchor.constraint(equalTo: browserViewController.view.heightAnchor),
-            animationView.widthAnchor.constraint(equalTo: browserViewController.view.widthAnchor)
-        ])
-    }
-
+    
     private func handle(homepanelSection section: Route.HomepanelSection) {
         switch section {
         case .bookmarks:
@@ -302,7 +287,6 @@ class BrowserCoordinator: BaseCoordinator,
         case .newTab:
             browserViewController.openBlankNewTab(focusLocationField: false)
         }
-        setupDeletionAnimation()
     }
 
     private func handle(query: String) {

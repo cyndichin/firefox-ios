@@ -1319,6 +1319,16 @@ class BrowserViewController: UIViewController,
         currentMiddleButtonState = state
     }
 
+    func setupDeletionAnimation() {
+        let animationView = FirefoxAnimation.deletion.setup()
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(animationView)
+        NSLayoutConstraint.activate([
+            animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
+    }
+
     private func handleMiddleButtonState(_ state: MiddleButtonState) {
         let showDataClearanceFlow = browserViewControllerState?.showDataClearanceFlow ?? false
         let showFireButton = featureFlags.isFeatureEnabled(

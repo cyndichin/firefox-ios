@@ -5,9 +5,10 @@
 import Common
 import Shared
 import UIKit
+import ComponentLibrary
 
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
-    // MARK: Data Clearance CFR / Contextual Hint
+    // MARK: Data Clearance
 
     // Reset the CFR timer for the data clearance button to avoid presenting the CFR
     // In cases, such as if user navigates to homepage or if fire icon is not available
@@ -80,6 +81,17 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     private func closePrivateTabsAndOpenNewPrivateHomepage() {
         tabManager.removeTabs(tabManager.privateTabs)
         tabManager.selectTab(tabManager.addTab(isPrivate: true))
+        setupDeletionAnimation()
+    }
+
+    private func setupDataClearanceAnimation() {
+        let animationView = FirefoxAnimation.deletion.setup()
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(animationView)
+        NSLayoutConstraint.activate([
+            animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
     }
 
     private func showDataClearanceConfirmationToast() {

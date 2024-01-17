@@ -30,8 +30,10 @@ public enum FirefoxAnimation {
         let animation = FirefoxAnimation.deletion.animation()
         animationView.animation = animation
         animationView.contentMode = .scaleAspectFill
-        animationView.loopMode = .loop
-        animationView.play()
+        animationView.loopMode = .playOnce
+        animationView.play { _ in
+            animationView.removeFromSuperview()
+        }
         return animationView
     }
 }
