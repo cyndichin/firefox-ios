@@ -44,12 +44,13 @@ let package = Package(
             url: "https://github.com/getsentry/sentry-cocoa.git",
             exact: "8.18.0"),
         .package(url: "https://github.com/nbhasin2/GCDWebServer.git",
-                 branch: "master")
+                 branch: "master"),
+        .package(url: "https://github.com/airbnb/lottie-ios.git", exact: "4.3.4")
     ],
     targets: [
         .target(
             name: "ComponentLibrary",
-            dependencies: ["Common"],
+            dependencies: ["Common", .product(name: "Lottie", package: "lottie-ios")],
             swiftSettings: [.unsafeFlags(["-enable-testing"])]),
         .testTarget(
             name: "ComponentLibraryTests",
