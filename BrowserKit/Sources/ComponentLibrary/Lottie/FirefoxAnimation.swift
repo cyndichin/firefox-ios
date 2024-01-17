@@ -29,7 +29,7 @@ public enum FirefoxAnimation {
         let animationView = LottieAnimationView()
         let animation = FirefoxAnimation.deletion.animation()
         animationView.animation = animation
-        animationView.contentMode = .scaleAspectFill
+        animationView.contentMode = .scaleAspectFit
         animationView.loopMode = .playOnce
         animationView.play { _ in
             animationView.removeFromSuperview()
