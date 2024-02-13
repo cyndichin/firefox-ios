@@ -223,4 +223,26 @@ class SearchViewControllerTest: XCTestCase {
 
         XCTAssert(searchViewController.firefoxSuggestions.isEmpty)
     }
+
+    // MARK: Quick Engines
+    func testDefaultEngineHidesWhenSearchSuggestionsIsOn() {
+        searchViewController.searchEngines = engines
+
+        XCTAssertEqual(searchViewController.searchEngines?.shouldShowSearchSuggestions, true)
+        XCTAssertEqual(
+            searchViewController.searchEngines?.quickSearchEngines[0].shortName,
+            searchViewController.searchEngines?.orderedEngines[safe: 1]?.shortName
+        )
+    }
+
+    func testDefaultEngineShowsWhenSearchSuggestionsIsOff() {
+        searchViewController.searchEngines = engines
+        searchViewController.searchEngines?.shouldShowSearchSuggestions = false
+
+        XCTAssertEqual(searchViewController.searchEngines?.shouldShowSearchSuggestions, false)
+        XCTAssertNotEqual(
+            searchViewController.searchEngines?.quickSearchEngines[0].shortName,
+            searchViewController.searchEngines?.defaultEngine?.shortName
+        )
+    }
 }
