@@ -3,13 +3,19 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import Common
-import Foundation
-import Shared
+import UIKit
 
 struct SimpleToast: ThemeApplicable {
+    private enum UX {
+        static let toastHeight: CGFloat = 56
+        static let toastAnimationDuration = 0.5
+        static let fontSize: CGFloat = 15
+        static let toastDismissAfter = DispatchTimeInterval.milliseconds(4500) // 4.5 seconds.
+    }
+
     private let toastLabel: UILabel = .build { label in
         label.font = DefaultDynamicFontHelper.preferredBoldFont(withTextStyle: .body,
-                                                                size: Toast.UX.fontSize)
+                                                                size: UX.fontSize)
         label.numberOfLines = 0
         label.textAlignment = .center
     }
@@ -18,7 +24,7 @@ struct SimpleToast: ThemeApplicable {
 
     init() {
         heightConstraint = toastLabel.heightAnchor
-            .constraint(equalToConstant: Toast.UX.toastHeight)
+            .constraint(equalToConstant: UX.toastHeight)
     }
 
     func showAlertWithText(_ text: String,
@@ -48,7 +54,7 @@ struct SimpleToast: ThemeApplicable {
 
     private func dismiss(_ toast: UIView) {
         UIView.animate(
-            withDuration: Toast.UX.toastAnimationDuration,
+            withDuration: UX.toastAnimationDuration,
             animations: {
                 heightConstraint.constant = 0
                 toast.superview?.layoutIfNeeded()
@@ -61,18 +67,18 @@ struct SimpleToast: ThemeApplicable {
 
     private func animate(_ toast: UIView) {
         UIView.animate(
-            withDuration: Toast.UX.toastAnimationDuration,
+            withDuration: UX.toastAnimationDuration,
             animations: {
                 var frame = toast.frame
-                frame.origin.y = frame.origin.y - Toast.UX.toastHeight
-                frame.size.height = Toast.UX.toastHeight
+                frame.origin.y = frame.origin.y - UX.toastHeight
+                frame.size.height = UX.toastHeight
                 toast.frame = frame
             },
             completion: { finished in
                 let thousandMilliseconds = DispatchTimeInterval.milliseconds(1000)
                 let zeroMilliseconds = DispatchTimeInterval.milliseconds(0)
                 let voiceOverDelay = UIAccessibility.isVoiceOverRunning ? thousandMilliseconds : zeroMilliseconds
-                let dispatchTime = DispatchTime.now() + Toast.UX.toastDismissAfter + voiceOverDelay
+                let dispatchTime = DispatchTime.now() + UX.toastDismissAfter + voiceOverDelay
 
                 DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
                     self.dismiss(toast)
