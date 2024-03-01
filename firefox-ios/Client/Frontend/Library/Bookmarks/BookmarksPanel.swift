@@ -7,6 +7,7 @@ import UIKit
 import Storage
 import Shared
 import SiteImageView
+import ComponentLibrary
 
 let LocalizedRootBookmarkFolderStrings = [
     BookmarkRoots.MenuFolderGUID: String.BookmarksFolderTitleMenu,

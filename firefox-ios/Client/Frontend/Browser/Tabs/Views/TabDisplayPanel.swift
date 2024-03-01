@@ -6,6 +6,7 @@ import Common
 import Redux
 import Storage
 import UIKit
+import ComponentLibrary
 
 class TabDisplayPanel: UIViewController,
                        Themeable,

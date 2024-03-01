@@ -29,6 +29,8 @@
 		8ABC3CED2A6EED7C00B69244 /* BottomSheetComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABC3CEC2A6EED7C00B69244 /* BottomSheetComponentViewModel.swift */; };
 		8ABE7C5C2AB36E1900C2172C /* ButtonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABE7C5B2AB36E1900C2172C /* ButtonsViewController.swift */; };
 		8ABE7C5E2AB36E2600C2172C /* ButtonComponentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABE7C5D2AB36E2600C2172C /* ButtonComponentsViewModel.swift */; };
+		8AF210C32B923A0E0080A6D6 /* ToastsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF210C22B923A0E0080A6D6 /* ToastsViewController.swift */; };
+		8AF210C52B92440A0080A6D6 /* ToastsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF210C42B92440A0080A6D6 /* ToastsViewModel.swift */; };
 		E19891C82A790AB700CD256D /* CollapsibleCardViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19891C62A790AB700CD256D /* CollapsibleCardViewViewController.swift */; };
 		E19891C92A790AB700CD256D /* CollapsibleCardViewComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19891C72A790AB700CD256D /* CollapsibleCardViewComponentViewModel.swift */; };
 		E1E0E8712A850479003D847E /* ShadowCardViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E0E86F2A850479003D847E /* ShadowCardViewViewController.swift */; };
@@ -62,6 +64,8 @@
 		8ABC3CEC2A6EED7C00B69244 /* BottomSheetComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetComponentViewModel.swift; sourceTree = "<group>"; };
 		8ABE7C5B2AB36E1900C2172C /* ButtonsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsViewController.swift; sourceTree = "<group>"; };
 		8ABE7C5D2AB36E2600C2172C /* ButtonComponentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonComponentsViewModel.swift; sourceTree = "<group>"; };
+		8AF210C22B923A0E0080A6D6 /* ToastsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastsViewController.swift; sourceTree = "<group>"; };
+		8AF210C42B92440A0080A6D6 /* ToastsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastsViewModel.swift; sourceTree = "<group>"; };
 		E19891C62A790AB700CD256D /* CollapsibleCardViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollapsibleCardViewViewController.swift; sourceTree = "<group>"; };
 		E19891C72A790AB700CD256D /* CollapsibleCardViewComponentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollapsibleCardViewComponentViewModel.swift; sourceTree = "<group>"; };
 		E1E0E86F2A850479003D847E /* ShadowCardViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowCardViewViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +107,7 @@
 		8A2FE6502A55EE3D0036B6AF /* SampleComponentLibraryApp */ = {
 			isa = PBXGroup;
 			children = (
+				8AF210C12B9239F60080A6D6 /* Toasts */,
 				8ABE7C5A2AB36E0700C2172C /* Buttons */,
 				8ABC3CE92A6EED5C00B69244 /* BottomSheet */,
 				E1FC23E92A85341B0089E14D /* CardView */,
@@ -200,6 +205,15 @@
 				8ABE7C5D2AB36E2600C2172C /* ButtonComponentsViewModel.swift */,
 			);
 			path = Buttons;
+			sourceTree = "<group>";
+		};
+		8AF210C12B9239F60080A6D6 /* Toasts */ = {
+			isa = PBXGroup;
+			children = (
+				8AF210C22B923A0E0080A6D6 /* ToastsViewController.swift */,
+				8AF210C42B92440A0080A6D6 /* ToastsViewModel.swift */,
+			);
+			path = Toasts;
 			sourceTree = "<group>";
 		};
 		E19891C52A790AB700CD256D /* CollapsibleCardView */ = {
@@ -339,6 +353,7 @@
 				8A6EE0AC2A5869BE00B4D401 /* Presenter.swift in Sources */,
 				8A3BE7672AB1FDD900C7567C /* ContextualHintViewComponentViewModel.swift in Sources */,
 				E1FC23EC2A85341B0089E14D /* CardViewViewController.swift in Sources */,
+				8AF210C32B923A0E0080A6D6 /* ToastsViewController.swift in Sources */,
 				8A2FE6542A55EE3D0036B6AF /* SceneDelegate.swift in Sources */,
 				8A6EE0972A5730A100B4D401 /* ComponentData.swift in Sources */,
 				8A3BE7652AB1FDC900C7567C /* ContextualHintViewViewController.swift in Sources */,
@@ -351,6 +366,7 @@
 				E19891C82A790AB700CD256D /* CollapsibleCardViewViewController.swift in Sources */,
 				8A6EE09B2A57317200B4D401 /* ComponentCell.swift in Sources */,
 				8ABC3CED2A6EED7C00B69244 /* BottomSheetComponentViewModel.swift in Sources */,
+				8AF210C52B92440A0080A6D6 /* ToastsViewModel.swift in Sources */,
 				E19891C92A790AB700CD256D /* CollapsibleCardViewComponentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

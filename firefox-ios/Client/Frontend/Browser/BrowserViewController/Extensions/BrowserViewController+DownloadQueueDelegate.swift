@@ -5,6 +5,7 @@
 import Common
 import Foundation
 import Shared
+import ComponentLibrary
 
 extension BrowserViewController: DownloadQueueDelegate {
     func downloadQueue(_ downloadQueue: DownloadQueue, didStartDownload download: Download) {

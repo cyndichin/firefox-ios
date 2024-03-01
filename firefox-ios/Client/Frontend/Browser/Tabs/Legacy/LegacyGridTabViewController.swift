@@ -6,6 +6,7 @@ import UIKit
 import Storage
 import Shared
 import Common
+import ComponentLibrary
 
 protocol TabTrayDelegate: AnyObject {
     func tabTrayDidDismiss(_ tabTray: LegacyGridTabViewController)

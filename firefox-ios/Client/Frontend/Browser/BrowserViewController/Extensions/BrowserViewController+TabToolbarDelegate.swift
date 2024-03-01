@@ -5,6 +5,7 @@
 import Common
 import Shared
 import UIKit
+import ComponentLibrary
 
 extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     // MARK: Data Clearance CFR / Contextual Hint

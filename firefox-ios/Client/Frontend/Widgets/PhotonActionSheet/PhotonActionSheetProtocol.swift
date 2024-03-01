@@ -7,6 +7,7 @@ import Foundation
 import Shared
 import Storage
 import UIKit
+import ComponentLibrary
 
 protocol PhotonActionSheetProtocol {
     var tabManager: TabManager { get }

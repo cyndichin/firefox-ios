@@ -8,6 +8,7 @@ import Storage
 import WebKit
 import Common
 import SiteImageView
+import ComponentLibrary
 
 private class FetchInProgressError: MaybeErrorType {
     internal var description: String {

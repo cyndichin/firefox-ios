@@ -5,32 +5,32 @@
 import Common
 import UIKit
 
-struct SimpleToast: ThemeApplicable {
+public struct SimpleToast: ThemeApplicable {
     private enum UX {
         static let toastHeight: CGFloat = 56
         static let toastAnimationDuration = 0.5
-        static let fontSize: CGFloat = 15
         static let toastDismissAfter = DispatchTimeInterval.milliseconds(4500) // 4.5 seconds.
     }
 
     private let toastLabel: UILabel = .build { label in
-        label.font = DefaultDynamicFontHelper.preferredBoldFont(withTextStyle: .body,
-                                                                size: UX.fontSize)
+        label.font = FXFontStyles.Bold.callout.scaledFont()
         label.numberOfLines = 0
         label.textAlignment = .center
     }
 
     private let heightConstraint: NSLayoutConstraint
 
-    init() {
+    public init() {
         heightConstraint = toastLabel.heightAnchor
             .constraint(equalToConstant: UX.toastHeight)
     }
 
-    func showAlertWithText(_ text: String,
-                           bottomContainer: UIView,
-                           theme: Theme,
-                           bottomConstraintPadding: CGFloat = 0) {
+    public func showAlertWithText(
+        _ text: String,
+        bottomContainer: UIView,
+        theme: Theme,
+        bottomConstraintPadding: CGFloat = 0
+    ) {
         toastLabel.text = text
         bottomContainer.addSubview(toastLabel)
         NSLayoutConstraint.activate([
@@ -47,7 +47,7 @@ struct SimpleToast: ThemeApplicable {
         }
     }
 
-    func applyTheme(theme: Theme) {
+    public func applyTheme(theme: Theme) {
         toastLabel.textColor = theme.colors.textInverted
         toastLabel.backgroundColor = theme.colors.actionPrimary
     }
