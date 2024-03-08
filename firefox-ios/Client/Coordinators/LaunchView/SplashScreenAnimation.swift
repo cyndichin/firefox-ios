@@ -7,21 +7,17 @@ import Lottie
 import UIKit
 import SwiftUI
 
-// Animation for when the user launches the app on fresh install
+// Animation for when the user launches the app on first run
 struct SplashScreenAnimation {
     private let animationView: LottieAnimationView
-    enum UX {
-        static let size = 130
+    private enum UX {
+        static let imageSize = 130
     }
 
     init() {
         animationView = LottieAnimationView(name: "splashScreen.json")
     }
 
-    /// Determines which animation type to display depending on device orientation
-    /// Check whether device is a phone and if not, we check if top tabs are shown, otherwise we default to phone mode
-    /// - Parameter showsTopTabs: true or false if top tabs is shown
-    /// - Returns: data clearance animation type
     func setupAnimation(with view: UIView) {
         animationView.contentMode = .scaleAspectFit
         animationView.loopMode = .loop
@@ -30,8 +26,8 @@ struct SplashScreenAnimation {
         animationView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(animationView)
         NSLayoutConstraint.activate([
-            animationView.heightAnchor.constraint(equalToConstant: CGFloat(UX.size)),
-            animationView.widthAnchor.constraint(equalToConstant: CGFloat(UX.size)),
+            animationView.heightAnchor.constraint(equalToConstant: CGFloat(UX.imageSize)),
+            animationView.widthAnchor.constraint(equalToConstant: CGFloat(UX.imageSize)),
             animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
@@ -39,16 +35,7 @@ struct SplashScreenAnimation {
 
     func playAnimation(with view: UIView) {
         animationView.play { _ in
-            UIView.animate(
-                withDuration: 0.3,
-                animations: {
-                    self.animationView.alpha = 0
-                },
-                completion: { _ in
-                    self.animationView.isHidden = true
-                    self.animationView.removeFromSuperview()
-                }
-            )
+            animationView.removeFromSuperview()
         }
     }
 }
