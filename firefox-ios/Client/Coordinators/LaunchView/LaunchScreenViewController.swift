@@ -51,7 +51,7 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
 
     // MARK: - Loading
     func startLoading() async {
-        await viewModel.startLoading()
+//        await viewModel.startLoading()
     }
 
     // MARK: - Setup
@@ -80,6 +80,14 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
         mainQueue.async {
             self.coordinator?.launchBrowser()
         }
+    }
+
+    private func setupDependencies() {
+        DependencyHelper().bootstrapDependencies()
+        let profile: Profile = AppContainer.shared.resolve()
+
+        let appLaunchUtil = AppLaunchUtil(profile: profile)
+        appLaunchUtil.setUpPreLaunchDependencies()
     }
 
     // MARK: - Splash Screen
