@@ -13,6 +13,9 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
 
     private lazy var splashScreenAnimation = SplashScreenAnimation()
     private let nimbusSplashScreenFeatureLayer = NimbusSplashScreenFeatureLayer()
+    private var hasExperimentsFetched = false
+    private var splashScreenTask: Task<Void, Never>?
+    private let profile: Profile = AppContainer.shared.resolve()
 
     init(coordinator: LaunchFinishedLoadingDelegate,
          viewModel: LaunchScreenViewModel = LaunchScreenViewModel(),
@@ -22,6 +25,16 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
         self.mainQueue = mainQueue
         super.init(nibName: nil, bundle: nil)
         viewModel.delegate = self
+
+        NotificationCenter.default.addObserver(
+            forName: .nimbusExperimentsFetched,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.splashScreenTask?.cancel()
+            self?.hasExperimentsFetched = true
+            print("DID STARTY LOADING \(self?.splashScreenTask?.isCancelled)")
+        }
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -38,8 +51,17 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
 
+        // Initialize the feature flag subsystem.
+        // Among other things, it toggles on and off Nimbus, Contile, Adjust.
+        // i.e. this must be run before initializing those systems.
+        LegacyFeatureFlagsManager.shared.initializeDeveloperFeatures(with: profile)
+
+//        setupDependencies()
+//        delayStart()
+
         Task {
-            try await delayStart()
+            setupDependencies()
+            await delayStart()
             await startLoading()
         }
     }
@@ -51,7 +73,7 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
 
     // MARK: - Loading
     func startLoading() async {
-//        await viewModel.startLoading()
+        await viewModel.startLoading()
     }
 
     // MARK: - Setup
@@ -83,8 +105,6 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
     }
 
     private func setupDependencies() {
-        DependencyHelper().bootstrapDependencies()
-        let profile: Profile = AppContainer.shared.resolve()
 
         let appLaunchUtil = AppLaunchUtil(profile: profile)
         appLaunchUtil.setUpPreLaunchDependencies()
@@ -92,10 +112,15 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
 
     // MARK: - Splash Screen
 
-    private func delayStart() async throws {
-        guard featureFlags.isFeatureEnabled(.splashScreen, checking: .buildOnly) else { return }
+    private func delayStart() async {
+        guard featureFlags.isFeatureEnabled(.splashScreen, checking: .buildOnly), hasExperimentsFetched else { return }
         let position: Int = nimbusSplashScreenFeatureLayer.maximumDurationMs
-        try await Task.sleep(nanoseconds: UInt64(position * 1_000_000))
+        splashScreenTask?.cancel()
+        splashScreenTask = Task {
+            try? await Task.sleep(nanoseconds: UInt64(position * 1_000_000_000))
+            try? Task.checkCancellation()
+        }
+        await splashScreenTask?.value
     }
 
     private func setupLaunchScreen() {

@@ -50,9 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
 //        // Configure app information for BrowserKit, needed for logger
-//        BrowserKitInformation.shared.configure(buildChannel: AppConstants.buildChannel,
-//                                               nightlyAppVersion: AppConstants.nightlyAppVersion,
-//                                               sharedContainerIdentifier: AppInfo.sharedContainerIdentifier)
+        BrowserKitInformation.shared.configure(buildChannel: AppConstants.buildChannel,
+                                               nightlyAppVersion: AppConstants.nightlyAppVersion,
+                                               sharedContainerIdentifier: AppInfo.sharedContainerIdentifier)
 //
 //        // Set-up Rust network stack. Note that this has to be called
 //        // before any Application Services component gets used.
@@ -103,8 +103,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    level: .info,
                    category: .lifecycle)
 
-//        pushNotificationSetup()
-//        appLaunchUtil?.setUpPostLaunchDependencies()
+        pushNotificationSetup()
+        appLaunchUtil?.setUpPostLaunchDependencies()
 //        backgroundWorkUtility = BackgroundFetchAndProcessingUtility()
 //        backgroundWorkUtility?.registerUtility(BackgroundSyncUtility(profile: profile, application: application))
 //        backgroundWorkUtility?.registerUtility(BackgroundNotificationSurfaceUtility())
@@ -113,16 +113,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                firefoxSuggest: firefoxSuggest
 //            ))
 //        }
-//
-//        let topSitesProvider = TopSitesProviderImplementation(
-//            placesFetcher: profile.places,
-//            pinnedSiteFetcher: profile.pinnedSites,
-//            prefs: profile.prefs
-//        )
-//
-//        widgetManager = TopSitesWidgetManager(topSitesProvider: topSitesProvider)
-//
-//        addObservers()
+
+        let topSitesProvider = TopSitesProviderImplementation(
+            placesFetcher: profile.places,
+            pinnedSiteFetcher: profile.pinnedSites,
+            prefs: profile.prefs
+        )
+
+        widgetManager = TopSitesWidgetManager(topSitesProvider: topSitesProvider)
+
+        addObservers()
 
         logger.log("didFinishLaunchingWithOptions end",
                    level: .info,
