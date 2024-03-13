@@ -111,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    category: .lifecycle)
 
         pushNotificationSetup()
-        
+
         if !LegacyFeatureFlagsManager.shared.isFeatureEnabled(.splashScreen, checking: .buildOnly) {
             appLaunchUtil?.setUpPostLaunchDependencies()
         }

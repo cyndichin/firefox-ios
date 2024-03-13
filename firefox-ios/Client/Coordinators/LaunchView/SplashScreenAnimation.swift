@@ -16,6 +16,7 @@ struct SplashScreenAnimation {
 
     init() {
         animationView = LottieAnimationView(name: "splashScreen.json")
+        animationView.accessibilityIdentifier = "SplashScreenAnimation"
     }
 
     func configureAnimation(with view: UIView) {

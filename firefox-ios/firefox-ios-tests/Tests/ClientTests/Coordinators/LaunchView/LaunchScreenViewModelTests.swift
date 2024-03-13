@@ -88,6 +88,12 @@ final class LaunchScreenViewModelTests: XCTestCase {
         XCTAssertEqual(delegate.launchWithTypeCalled, 1)
     }
 
+    func testReturnsFailure_onAnyError() async {
+        let subject = createSubject()
+        await subject.startSplashScreenExperiment()
+    }
+
+
     // MARK: - Helpers
     private func createSubject(file: StaticString = #file,
                                line: UInt = #line) -> LaunchScreenViewModel {

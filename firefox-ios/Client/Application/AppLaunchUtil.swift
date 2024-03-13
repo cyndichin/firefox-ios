@@ -49,9 +49,9 @@ class AppLaunchUtil {
         let conversionValue = ConversionValueUtil(fineValue: 0, coarseValue: .low, logger: logger)
         conversionValue.adNetworkAttributionUpdateConversionEvent()
 
-        // Start initializing the Nimbus SDK. This should be done after Glean
-        // has been started.
-        initializeExperiments()
+//        // Start initializing the Nimbus SDK. This should be done after Glean
+//        // has been started.
+//        initializeExperiments()
 
         // We migrate history from browser db to places if it hasn't already
         DispatchQueue.global().async {
@@ -73,9 +73,11 @@ class AppLaunchUtil {
             }
         }
 
-        RustFirefoxAccounts.startup(prefs: profile.prefs) { _ in
-            self.logger.log("RustFirefoxAccounts started", level: .info, category: .sync)
-            AppEventQueue.signal(event: .accountManagerInitialized)
+        DispatchQueue.main.async {
+            RustFirefoxAccounts.startup(prefs: self.profile.prefs) { _ in
+                self.logger.log("RustFirefoxAccounts started", level: .info, category: .sync)
+                AppEventQueue.signal(event: .accountManagerInitialized)
+            }
         }
 
         // Add swizzle on UIViewControllers to automatically log when there's a new view showing

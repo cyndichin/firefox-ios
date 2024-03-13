@@ -10,6 +10,7 @@ class MockLaunchScreenViewModel: LaunchScreenViewModel {
     var updateViewModel: UpdateViewModel
     var surveySurfaceManager: SurveySurfaceManager
     var startLoadingCalled = 0
+    var startSplashScreenExperiment = 0
     var mockLaunchType: LaunchType?
 
     override init(
@@ -32,5 +33,9 @@ class MockLaunchScreenViewModel: LaunchScreenViewModel {
         } else {
             delegate?.launchBrowser()
         }
+    }
+
+    override func startSplashScreenExperiment() async {
+        startSplashScreenExperiment += 1
     }
 }
