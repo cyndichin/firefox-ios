@@ -49,43 +49,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         willFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-//        // Configure app information for BrowserKit, needed for logger
+        // Configure app information for BrowserKit, needed for logger
         BrowserKitInformation.shared.configure(buildChannel: AppConstants.buildChannel,
                                                nightlyAppVersion: AppConstants.nightlyAppVersion,
                                                sharedContainerIdentifier: AppInfo.sharedContainerIdentifier)
-//
-//        // Set-up Rust network stack. Note that this has to be called
-//        // before any Application Services component gets used.
-//        Viaduct.shared.useReqwestBackend()
-//
-//        // Configure logger so we can start tracking logs early
-//        logger.configure(crashManager: DefaultCrashManager())
-//        initializeRustErrors(logger: logger)
-//        logger.log("willFinishLaunchingWithOptions begin",
-//                   level: .info,
-//                   category: .lifecycle)
-//
-//        // Establish event dependencies for startup flow
-//        AppEventQueue.establishDependencies(for: .startupFlowComplete, against: [
-//            .profileInitialized,
-//            .preLaunchDependenciesComplete,
-//            .postLaunchDependenciesComplete,
-//            .accountManagerInitialized,
-//            .browserIsReady
-//        ])
-//
-//        // Then setup dependency container as it's needed for everything else
+
+        // Set-up Rust network stack. Note that this has to be called
+        // before any Application Services component gets used.
+        Viaduct.shared.useReqwestBackend()
+
+        // Configure logger so we can start tracking logs early
+        logger.configure(crashManager: DefaultCrashManager())
+        initializeRustErrors(logger: logger)
+        logger.log("willFinishLaunchingWithOptions begin",
+                   level: .info,
+                   category: .lifecycle)
+
+        // Establish event dependencies for startup flow
+        AppEventQueue.establishDependencies(for: .startupFlowComplete, against: [
+            .profileInitialized,
+            .preLaunchDependenciesComplete,
+            .postLaunchDependenciesComplete,
+            .accountManagerInitialized,
+            .browserIsReady
+        ])
+
+        // Then setup dependency container as it's needed for everything else
         DependencyHelper().bootstrapDependencies()
-//
-//        appLaunchUtil = AppLaunchUtil(profile: profile)
-//        appLaunchUtil?.setUpPreLaunchDependencies()
-//
-//        // Set up a web server that serves us static content.
-//        // Do this early so that it is ready when the UI is presented.
-//        webServerUtil = WebServerUtil(profile: profile)
-//        webServerUtil?.setUpWebServer()
-//
-//        menuBuilderHelper = MenuBuilderHelper()
+
+        // Initialize the feature flag subsystem.
+        // Among other things, it toggles on and off Nimbus, Contile, Adjust.
+        // i.e. this must be run before initializing those systems.
+        LegacyFeatureFlagsManager.shared.initializeDeveloperFeatures(with: profile)
+
+        if !LegacyFeatureFlagsManager.shared.isFeatureEnabled(.splashScreen, checking: .buildOnly) {
+            appLaunchUtil = AppLaunchUtil(profile: profile)
+            appLaunchUtil?.setUpPreLaunchDependencies()
+        }
+
+        // Set up a web server that serves us static content.
+        // Do this early so that it is ready when the UI is presented.
+        webServerUtil = WebServerUtil(profile: profile)
+        webServerUtil?.setUpWebServer()
+
+        menuBuilderHelper = MenuBuilderHelper()
 
         logger.log("willFinishLaunchingWithOptions end",
                    level: .info,
@@ -104,15 +111,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    category: .lifecycle)
 
         pushNotificationSetup()
-        appLaunchUtil?.setUpPostLaunchDependencies()
-//        backgroundWorkUtility = BackgroundFetchAndProcessingUtility()
-//        backgroundWorkUtility?.registerUtility(BackgroundSyncUtility(profile: profile, application: application))
-//        backgroundWorkUtility?.registerUtility(BackgroundNotificationSurfaceUtility())
-//        if let firefoxSuggest = profile.firefoxSuggest {
-//            backgroundWorkUtility?.registerUtility(BackgroundFirefoxSuggestIngestUtility(
-//                firefoxSuggest: firefoxSuggest
-//            ))
-//        }
+        
+        if !LegacyFeatureFlagsManager.shared.isFeatureEnabled(.splashScreen, checking: .buildOnly) {
+            appLaunchUtil?.setUpPostLaunchDependencies()
+        }
+
+        backgroundWorkUtility = BackgroundFetchAndProcessingUtility()
+        backgroundWorkUtility?.registerUtility(BackgroundSyncUtility(profile: profile, application: application))
+        backgroundWorkUtility?.registerUtility(BackgroundNotificationSurfaceUtility())
+        if let firefoxSuggest = profile.firefoxSuggest {
+            backgroundWorkUtility?.registerUtility(BackgroundFirefoxSuggestIngestUtility(
+                firefoxSuggest: firefoxSuggest
+            ))
+        }
 
         let topSitesProvider = TopSitesProviderImplementation(
             placesFetcher: profile.places,

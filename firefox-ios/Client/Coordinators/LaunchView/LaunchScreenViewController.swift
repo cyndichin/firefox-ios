@@ -32,8 +32,8 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
             queue: .main
         ) { [weak self] _ in
             self?.splashScreenTask?.cancel()
-            self?.hasExperimentsFetched = true
-            print("DID STARTY LOADING \(self?.splashScreenTask?.isCancelled)")
+//            self?.hasExperimentsFetched = true
+            print("CYN: fetched experiments \(self?.splashScreenTask?.isCancelled)")
         }
     }
 
@@ -49,19 +49,11 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("CYN: LAUNCH SCREEN LOADED")
         view.backgroundColor = .systemBackground
 
-        // Initialize the feature flag subsystem.
-        // Among other things, it toggles on and off Nimbus, Contile, Adjust.
-        // i.e. this must be run before initializing those systems.
-        LegacyFeatureFlagsManager.shared.initializeDeveloperFeatures(with: profile)
-
-//        setupDependencies()
-//        delayStart()
-
         Task {
-            setupDependencies()
-            await delayStart()
+            await startExperiments()
             await startLoading()
         }
     }
@@ -74,6 +66,13 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
     // MARK: - Loading
     func startLoading() async {
         await viewModel.startLoading()
+    }
+
+    private func startExperiments() async {
+        guard featureFlags.isFeatureEnabled(.splashScreen, checking: .buildOnly) else { return }
+        async let setupDependencies: Void = setupDependencies()
+        async let delayStart: Void = delayStart()
+        (_, _) = await (setupDependencies, delayStart)
     }
 
     // MARK: - Setup
@@ -104,21 +103,19 @@ class LaunchScreenViewController: UIViewController, LaunchFinishedLoadingDelegat
         }
     }
 
-    private func setupDependencies() {
-
+    private func setupDependencies() async {
         let appLaunchUtil = AppLaunchUtil(profile: profile)
         appLaunchUtil.setUpPreLaunchDependencies()
+        appLaunchUtil.setUpPostLaunchDependencies()
     }
 
     // MARK: - Splash Screen
 
     private func delayStart() async {
-        guard featureFlags.isFeatureEnabled(.splashScreen, checking: .buildOnly), hasExperimentsFetched else { return }
         let position: Int = nimbusSplashScreenFeatureLayer.maximumDurationMs
         splashScreenTask?.cancel()
         splashScreenTask = Task {
-            try? await Task.sleep(nanoseconds: UInt64(position * 1_000_000_000))
-            try? Task.checkCancellation()
+            try? await Task.sleep(nanoseconds: UInt64(position * 1_000_000))
         }
         await splashScreenTask?.value
     }
