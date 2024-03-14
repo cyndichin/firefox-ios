@@ -37,6 +37,7 @@ class LaunchScreenViewModel: FeatureFlaggable {
             object: nil,
             queue: .main
         ) { [weak self] _ in
+            _ = self.experiments.applyPendingExperiments()
             self?.splashScreenTask?.cancel()
         }
     }
