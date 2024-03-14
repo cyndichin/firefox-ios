@@ -93,7 +93,6 @@ final class LaunchScreenViewModelTests: XCTestCase {
         await subject.startSplashScreenExperiment()
     }
 
-
     // MARK: - Helpers
     private func createSubject(file: StaticString = #file,
                                line: UInt = #line) -> LaunchScreenViewModel {

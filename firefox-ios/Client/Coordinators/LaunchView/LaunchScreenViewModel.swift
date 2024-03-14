@@ -38,7 +38,6 @@ class LaunchScreenViewModel: FeatureFlaggable {
             queue: .main
         ) { [weak self] _ in
             self?.splashScreenTask?.cancel()
-            print("CYN: fetched experiments \(self?.splashScreenTask?.isCancelled)")
         }
     }
 
@@ -56,7 +55,6 @@ class LaunchScreenViewModel: FeatureFlaggable {
     private func setupDependencies() async {
         let appLaunchUtil = AppLaunchUtil(profile: profile)
         appLaunchUtil.setUpPreLaunchDependencies()
-        Experiments.intialize()
         appLaunchUtil.setUpPostLaunchDependencies()
     }
 
