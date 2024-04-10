@@ -64,7 +64,7 @@ class FakespotViewController: UIViewController,
     private lazy var headerView: UIView = .build()
 
     private lazy var titleLabel: UILabel = .build { label in
-        label.text = .Shopping.SheetHeaderTitle
+        label.text = "When the title label is longer than one line the beta label should be shown underneath the title"
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.font = FXFontStyles.Regular.headline.scaledFont()
@@ -93,11 +93,13 @@ class FakespotViewController: UIViewController,
         label.accessibilityIdentifier = AccessibilityIdentifiers.Shopping.sheetHeaderBetaLabel
     }
 
-    private lazy var closeButton: UIButton = .build { button in
-        button.setImage(UIImage(named: StandardImageIdentifiers.ExtraLarge.crossCircleFill), for: .normal)
-        button.addTarget(self, action: #selector(self.closeTapped), for: .touchUpInside)
-        button.accessibilityLabel = .Shopping.CloseButtonAccessibilityLabel
-        button.accessibilityIdentifier = AccessibilityIdentifiers.Shopping.sheetCloseButton
+    private lazy var closeButton: CloseButton = .build { view in
+        let viewModel = CloseButtonViewModel(
+            a11yIdentifier: AccessibilityIdentifiers.Shopping.sheetCloseButton,
+            a11yLabel: .Shopping.CloseButtonAccessibilityLabel
+        )
+        view.configure(viewModel: viewModel)
+        view.addTarget(self, action: #selector(self.closeTapped), for: .touchUpInside)
     }
 
     // MARK: - Initializers
