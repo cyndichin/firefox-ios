@@ -11,6 +11,7 @@ struct BrowserViewControllerState: ScreenState, Equatable {
     var searchScreenState: SearchScreenState
     var showDataClearanceFlow: Bool
     var fakespotState: FakespotState
+    var microSurveyState: MicroSurveyState
     var toast: ToastType?
     var showOverlay: Bool
     var reloadWebView: Bool
@@ -29,6 +30,7 @@ struct BrowserViewControllerState: ScreenState, Equatable {
         self.init(searchScreenState: bvcState.searchScreenState,
                   showDataClearanceFlow: bvcState.showDataClearanceFlow,
                   fakespotState: bvcState.fakespotState,
+                  microSurveyState: bvcState.microSurveyState,
                   toast: bvcState.toast,
                   showOverlay: bvcState.showOverlay,
                   windowUUID: bvcState.windowUUID,
@@ -41,6 +43,7 @@ struct BrowserViewControllerState: ScreenState, Equatable {
             searchScreenState: SearchScreenState(),
             showDataClearanceFlow: false,
             fakespotState: FakespotState(windowUUID: windowUUID),
+            microSurveyState: MicroSurveyState(windowUUID: windowUUID),
             toast: nil,
             showOverlay: false,
             windowUUID: windowUUID,
@@ -51,6 +54,7 @@ struct BrowserViewControllerState: ScreenState, Equatable {
         searchScreenState: SearchScreenState,
         showDataClearanceFlow: Bool,
         fakespotState: FakespotState,
+        microSurveyState: MicroSurveyState,
         toast: ToastType? = nil,
         showOverlay: Bool = false,
         windowUUID: WindowUUID,
@@ -60,6 +64,7 @@ struct BrowserViewControllerState: ScreenState, Equatable {
         self.searchScreenState = searchScreenState
         self.showDataClearanceFlow = showDataClearanceFlow
         self.fakespotState = fakespotState
+        self.microSurveyState = microSurveyState
         self.toast = toast
         self.windowUUID = windowUUID
         self.showOverlay = showOverlay
@@ -82,6 +87,7 @@ struct BrowserViewControllerState: ScreenState, Equatable {
                 searchScreenState: SearchScreenState(inPrivateMode: privacyState),
                 showDataClearanceFlow: privacyState,
                 fakespotState: state.fakespotState,
+                microSurveyState: state.microSurveyState,
                 windowUUID: state.windowUUID,
                 reloadWebView: true,
                 browserViewType: browserViewType)
@@ -101,6 +107,7 @@ struct BrowserViewControllerState: ScreenState, Equatable {
                 searchScreenState: state.searchScreenState,
                 showDataClearanceFlow: state.showDataClearanceFlow,
                 fakespotState: FakespotState.reducer(state.fakespotState, action),
+                microSurveyState: state.microSurveyState,
                 windowUUID: state.windowUUID,
                 browserViewType: state.browserViewType)
         case GeneralBrowserAction.showToast(let context):
@@ -109,6 +116,7 @@ struct BrowserViewControllerState: ScreenState, Equatable {
                 searchScreenState: state.searchScreenState,
                 showDataClearanceFlow: state.showDataClearanceFlow,
                 fakespotState: state.fakespotState,
+                microSurveyState: state.microSurveyState,
                 toast: toastType,
                 windowUUID: state.windowUUID,
                 browserViewType: state.browserViewType)
@@ -118,16 +126,29 @@ struct BrowserViewControllerState: ScreenState, Equatable {
                 searchScreenState: state.searchScreenState,
                 showDataClearanceFlow: state.showDataClearanceFlow,
                 fakespotState: state.fakespotState,
+                microSurveyState: state.microSurveyState,
                 showOverlay: showOverlay,
                 windowUUID: state.windowUUID,
                 browserViewType: state.browserViewType)
         case GeneralBrowserAction.updateSelectedTab(let context):
             return BrowserViewControllerState.resolveStateForUpdateSelectedTab(context, state: state)
+        case MicroSurveyAction.showPrompt,
+            MicroSurveyAction.dismissPrompt,
+            MicroSurveyAction.showSurvey,
+            MicroSurveyAction.dismissSurvey:
+            return BrowserViewControllerState(
+                searchScreenState: state.searchScreenState,
+                showDataClearanceFlow: state.showDataClearanceFlow,
+                fakespotState: state.fakespotState,
+                microSurveyState: MicroSurveyState.reducer(state.microSurveyState, action),
+                windowUUID: state.windowUUID,
+                browserViewType: state.browserViewType)
         default:
             return BrowserViewControllerState(
                 searchScreenState: state.searchScreenState,
                 showDataClearanceFlow: state.showDataClearanceFlow,
                 fakespotState: state.fakespotState,
+                microSurveyState: state.microSurveyState,
                 showOverlay: state.showOverlay,
                 windowUUID: state.windowUUID,
                 reloadWebView: false,
@@ -150,6 +171,7 @@ struct BrowserViewControllerState: ScreenState, Equatable {
             searchScreenState: state.searchScreenState,
             showDataClearanceFlow: state.showDataClearanceFlow,
             fakespotState: state.fakespotState,
+            microSurveyState: state.microSurveyState,
             showOverlay: state.showOverlay,
             windowUUID: state.windowUUID,
             reloadWebView: true,

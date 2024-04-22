@@ -63,6 +63,9 @@ enum Route: Equatable {
     ///                      settings to be displayed.
     case defaultBrowser(section: DefaultBrowserSection)
 
+    /// Represents a micro survey route that opens a survey after seeing the microsurvey prompt
+    case microSurvey
+
     /// An enumeration representing different sections of the home panel.
     enum HomepanelSection: String, CaseIterable, Equatable {
         case bookmarks

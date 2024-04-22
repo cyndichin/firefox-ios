@@ -50,6 +50,8 @@ protocol Router: AnyObject, UINavigationControllerDelegate, UIAdaptivePresentati
     ///   - hideBar: Hide the navigation bar or not
     ///   - animated: Animates the transitions or not
     func setRootViewController(_ viewController: UIViewController, hideBar: Bool, animated: Bool)
+
+    func setHideBar(with hideBar: Bool)
 }
 
 /// Adds default parameters on Router protocol
@@ -72,5 +74,9 @@ extension Router {
 
     func setRootViewController(_ viewController: UIViewController, hideBar: Bool = false, animated: Bool = false) {
         setRootViewController(viewController, hideBar: hideBar, animated: animated)
+    }
+
+    func setHideBar(with hideBar: Bool) {
+        setHideBar(with: hideBar)
     }
 }

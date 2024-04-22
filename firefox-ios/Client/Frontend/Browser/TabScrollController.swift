@@ -43,6 +43,7 @@ class TabScrollingController: NSObject, FeatureFlaggable, SearchBarLocationProvi
     weak var bottomContainer: BaseAlphaStackView?
 
     weak var zoomPageBar: ZoomPageBar?
+    weak var microSurvey: MicroSurveyPromptView?
     private var observedScrollViews = WeakList<UIScrollView>()
 
     var overKeyboardContainerConstraint: Constraint?

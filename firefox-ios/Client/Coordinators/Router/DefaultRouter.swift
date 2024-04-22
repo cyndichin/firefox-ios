@@ -58,6 +58,10 @@ class DefaultRouter: NSObject, Router {
         navigationController.isNavigationBarHidden = hideBar
     }
 
+    func setHideBar(with hideBar: Bool) {
+        navigationController.isNavigationBarHidden = hideBar
+    }
+
     private func runCompletion(for controller: UIViewController) {
         guard let completion = completions[controller] else { return }
         completion()

@@ -212,7 +212,7 @@ class BrowserCoordinator: BaseCoordinator,
         }
 
         switch route {
-        case .searchQuery, .search, .searchURL, .glean, .homepanel, .action, .fxaSignIn, .defaultBrowser:
+        case .searchQuery, .search, .searchURL, .glean, .homepanel, .action, .fxaSignIn, .defaultBrowser, .microSurvey:
             return true
         case let .settings(section):
             return canHandleSettings(with: section)
@@ -265,9 +265,49 @@ class BrowserCoordinator: BaseCoordinator,
             case .systemSettings:
                 applicationHelper.openSettings()
             case .tutorial:
-                startLaunch(with: .defaultBrowser)
+//                startLaunch(with: .defaultBrowser)
+                showMicroSurvey()
             }
+        case .microSurvey:
+            showMicroSurvey()
         }
+    }
+
+    // MARK: Micro Survey
+     func showMicroSurvey() {
+         let navigationController = DismissableNavigationViewController()
+         navigationController.sheetPresentationController?.detents = [.medium(), .large()]
+
+         navigationController.sheetPresentationController?.selectedDetentIdentifier = .medium
+
+         let coordinator = MicroSurveyCoordinator(router: DefaultRouter(navigationController: navigationController), tabManager: tabManager)
+         coordinator.parentCoordinator = self
+         add(child: coordinator)
+         coordinator.start()
+
+         present(navigationController)
+//        let microSurveyCoordinator = makeMicroSurveyCoordinator()
+//        microSurveyCoordinator?.start()
+    }
+
+    func dismissMicroSurvey() {
+        guard let microSurveyCoordinator = childCoordinators.first(where: {
+            $0 is MicroSurveyCoordinator
+        }) as? MicroSurveyCoordinator else {
+            return // there is no modal to close
+        }
+        microSurveyCoordinator.dismissModal(animated: true)
+    }
+
+    private func makeMicroSurveyCoordinator() -> MicroSurveyCoordinator? {
+        guard !childCoordinators.contains(where: { $0 is MicroSurveyCoordinator }) else {
+            return nil
+        }
+
+        let coordinator = MicroSurveyCoordinator(router: router, tabManager: tabManager)
+        coordinator.parentCoordinator = self
+        add(child: coordinator)
+        return coordinator
     }
 
     private func showIntroOnboarding() {
@@ -356,7 +396,7 @@ class BrowserCoordinator: BaseCoordinator,
             (libraryCoordinator.router.navigationController as? UINavigationController).map { router.present($0) }
         } else {
             let navigationController = DismissableNavigationViewController()
-            navigationController.modalPresentationStyle = .formSheet
+            navigationController.sheetPresentationController?.detents = [.medium()]
 
             let libraryCoordinator = LibraryCoordinator(
                 router: DefaultRouter(navigationController: navigationController),

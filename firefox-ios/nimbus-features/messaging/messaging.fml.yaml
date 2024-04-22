@@ -194,6 +194,8 @@ enums:
         description: This is a full-page that appears providing a survey to the user.
       notification:
         description: This is a local notification send to the user periodically with tips and updates.
+      microsurvey:
+        description: This is a microsurvey that appears on top of the toolbar to the user.
       Unknown:
         description: A message has NOT declared its target surface.
 

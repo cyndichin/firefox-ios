@@ -16,6 +16,8 @@ protocol GleanPlumbMessageManagerProtocol {
     /// Surface calls.
     func getNextMessage(for surface: MessageSurfaceId) -> GleanPlumbMessage?
 
+    func getImpressionCount(for surface: MessageSurfaceId) -> Int
+
     /// Report impressions in Glean, and then pass the bookkeeping to increment
     /// the impression count and expire to `MessageStore`.
     /// Surface calls.
@@ -97,6 +99,10 @@ class GleanPlumbMessageManager: GleanPlumbMessageManagerProtocol {
     public func getNextMessage(for surface: MessageSurfaceId) -> GleanPlumbMessage? {
         // All these are non-expired, well formed, and descending priority ordered messages for a requested surface.
         return getNextMessage(for: surface, from: getMessages(messagingFeature.value()))
+    }
+
+    public func getImpressionCount(for surface: MessageSurfaceId) -> Int {
+        return messagingStore.getMessageMetadata(messageId: "micro-survey").impressions
     }
 
     public func getNextMessage(

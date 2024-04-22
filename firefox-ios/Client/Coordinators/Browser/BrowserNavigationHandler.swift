@@ -87,6 +87,12 @@ protocol BrowserNavigationHandler: AnyObject, QRCodeNavigationHandler {
 
     /// Shows the Back Forward List View Controller.
     func showBackForwardList()
+
+    /// Shows the MicroSurveyViewController
+    func showMicroSurvey()
+
+    /// Dismisses the MicroSurveyViewController
+    func dismissMicroSurvey()
 }
 
 extension BrowserNavigationHandler {

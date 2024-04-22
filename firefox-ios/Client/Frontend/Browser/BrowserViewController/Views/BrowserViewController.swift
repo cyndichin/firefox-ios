@@ -551,6 +551,14 @@ class BrowserViewController: UIViewController,
                 dismissFakespotIfNeeded()
             }
 
+            if state.microSurveyState.isSurveyShown {
+                navigationHandler?.showMicroSurvey()
+            } else if !state.microSurveyState.isSurveyShown {
+                navigationHandler?.dismissMicroSurvey()
+            } else if state.microSurveyState.isPromptShown {
+                updateMicroSurveyVisibility(visible: true)
+            }
+
             if state.reloadWebView {
                 updateContentInHomePanel(state.browserViewType)
             }
@@ -2519,6 +2527,7 @@ extension BrowserViewController: HomePanelDelegate {
 
     func homePanelDidRequestToOpenInNewTab(_ url: URL, isPrivate: Bool, selectNewTab: Bool = false) {
         let tab = tabManager.addTab(URLRequest(url: url), afterTab: tabManager.selectedTab, isPrivate: isPrivate)
+
         // Select new tab automatically if needed
         guard !selectNewTab else {
             tabManager.selectTab(tab)
@@ -2538,6 +2547,7 @@ extension BrowserViewController: HomePanelDelegate {
                 self.tabManager.selectTab(tab)
             }
         })
+
         show(toast: toast)
     }
 

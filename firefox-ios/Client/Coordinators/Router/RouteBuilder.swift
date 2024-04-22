@@ -65,7 +65,8 @@ final class RouteBuilder {
 
             case .openText:
                 return .searchQuery(query: urlScanner.value(query: "text") ?? "")
-
+            case .microSurvey:
+                return .microSurvey
             case .glean:
                 return .glean(url: url)
 
@@ -187,7 +188,7 @@ final class RouteBuilder {
 
     private func recordTelemetry(input: DeeplinkInput.Host, isPrivate: Bool) {
         switch input {
-        case .deepLink, .fxaSignIn, .glean:
+        case .deepLink, .fxaSignIn, .glean, .microSurvey:
             return
         case .widgetMediumTopSitesOpenUrl:
             TelemetryWrapper.recordEvent(category: .action, method: .open, object: .mediumTopSitesWidget)

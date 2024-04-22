@@ -56,6 +56,7 @@ import:
               OPEN_NEW_TAB:                       ://deep-link?url=homepanel/new-tab
               MAKE_DEFAULT_BROWSER:               ://deep-link?url=default-browser/system-settings
               MAKE_DEFAULT_BROWSER_WITH_TUTORIAL: ://deep-link?url=default-browser/tutorial
+              MAKE_MICRO_SURVEY:                  ://micro-survey
             styles:
               FALLBACK:
                 priority: 40
@@ -75,6 +76,9 @@ import:
               SURVEY:
                 priority: 55
                 max-display-count: 10
+              MICRO_SURVEY:
+                priority: 50
+                max-display-count: 5
               WARNING:
                 priority: 60
                 max-display-count: 10

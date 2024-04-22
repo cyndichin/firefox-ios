@@ -53,3 +53,14 @@ import:
                 action: OPEN_URL
                 action-params:
                   url: https://www.macrumors.com
+
+              # Serves as an example of how microsurveys may look like
+              micro-survey:
+                surface: microsurvey
+                style: MICRO_SURVEY
+                trigger-if-all:
+                  - ALWAYS
+                title: ResearchSurface/Body.Text.v112
+                text: Default Browser/DefaultBrowserCard.Button.v2
+                button-label: "Take Survey"
+                action: MAKE_MICRO_SURVEY
