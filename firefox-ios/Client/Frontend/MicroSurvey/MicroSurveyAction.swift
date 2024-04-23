@@ -12,7 +12,7 @@ struct MicroSurveyState: ScreenState, Equatable {
 
     init(windowUUID: WindowUUID) {
         self.windowUUID = windowUUID
-        self.isPromptShown = false
+        self.isPromptShown = true
         self.isSurveyShown = false
     }
 
@@ -21,19 +21,13 @@ struct MicroSurveyState: ScreenState, Equatable {
         guard action.windowUUID == .unavailable || action.windowUUID == state.windowUUID else { return state }
 
         switch action {
-        case MicroSurveyAction.showPrompt:
-            var state = state
-            state.isPromptShown = true
-            state.isSurveyShown = false
-            return state
-
         case MicroSurveyAction.dismissPrompt:
             var state = state
             state.isPromptShown = false
             state.isSurveyShown = false
             return state
 
-        case MicroSurveyAction.showSurvey:
+        case MicroSurveyAction.pressedPromptButton:
             var state = state
             state.isSurveyShown = true
             return state
@@ -50,13 +44,13 @@ struct MicroSurveyState: ScreenState, Equatable {
 enum MicroSurveyAction: Action {
     var windowUUID: UUID {
         switch self {
-        case .showPrompt(let context), .dismissPrompt(let context), .showSurvey(let context), .dismissSurvey(let context):
+        case .showPrompt(let context), .dismissPrompt(let context), .pressedPromptButton(let context), .dismissSurvey(let context):
             return context.windowUUID
         }
     }
 
     case showPrompt(ActionContext)
     case dismissPrompt(ActionContext)
-    case showSurvey(ActionContext)
+    case pressedPromptButton(ActionContext)
     case dismissSurvey(ActionContext)
 }

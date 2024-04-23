@@ -31,16 +31,19 @@ class MicroSurveyManager: MobileMessageSurfaceProtocol {
         guard let title = message?.title, let buttonText = message?.buttonLabel, let text = message?.text else {
             return nil
         }
+        store.dispatch(MicroSurveyAction.showPrompt(windowUUID.context))
 
         let viewModel = MicroSurveyViewModel(
             title: title,
-            buttonText: buttonText
-        ) {
-            store.dispatch(MicroSurveyAction.showSurvey(self.windowUUID.context))
-        }
+            buttonText: buttonText,
+            openAction: {
+                store.dispatch(MicroSurveyAction.pressedPromptButton(self.windowUUID.context))
+            }) {
+                store.dispatch(MicroSurveyAction.dismissPrompt(self.windowUUID.context))
+            }
 //        handleMessageDisplayed()
         let int = messagingManager.getImpressionCount(for: .microsurvey)
-        return MicroSurveyPromptView(viewModel: viewModel, impressions: int)
+        return MicroSurveyPromptView(viewModel: viewModel)
     }
 
     private func updateMessage() {

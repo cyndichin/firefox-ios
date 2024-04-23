@@ -6,7 +6,7 @@ import Foundation
 import Common
 import ComponentLibrary
 
-class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, Themeable {
+class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, Themeable, Notifiable {
     // MARK: Theming Variables
     var themeManager: Common.ThemeManager
     var themeObserver: NSObjectProtocol?
@@ -34,11 +34,18 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.rowHeight = UITableView.automaticDimension
     }
 
+    private lazy var cardContainer: ShadowCardView = .build()
+
     var options = ["Very Dissatisfied", "Dissatisfied", "Neutral", "Satisfied", "Very Satisfied"]
 
     private enum UX {
         static let titleStackSpacing: CGFloat = 8
-        static let padding: CGFloat = 16
+        static let padding = NSDirectionalEdgeInsets(
+            top: 14,
+            leading: 20,
+            bottom: -14,
+            trailing: -20
+        )
     }
 
     private lazy var microSurveyHeaderView: MicroSurveyHeaderView = {
@@ -49,10 +56,10 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
 
     private lazy var privacyPolicyButton: LinkButton = .build { button in
         let privacyPolicyButtonViewModel = LinkButtonViewModel(
-            title: "Privacy Policy",
+            title: "Privacy notice",
             a11yIdentifier: "a11y",
-            font: FXFontStyles.Regular.footnote.scaledFont(),
-            contentInsets: NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 16, trailing: 16)
+            font: FXFontStyles.Regular.caption2.scaledFont(),
+            contentInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         )
         button.configure(viewModel: privacyPolicyButtonViewModel)
         button.addTarget(self, action: #selector(self.didTapPrivacyPolicy), for: .touchUpInside)
@@ -75,11 +82,13 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         )
         button.configure(viewModel: viewModel)
         button.addTarget(self, action: #selector(self.didTapClose), for: .touchUpInside)
+        button.setContentHuggingPriority(.required, for: .horizontal)
     }
 
     private lazy var buttonStackView: UIStackView = .build { stackView in
         stackView.distribution = .fillProportionally
         stackView.axis = .horizontal
+        stackView.alignment = .bottom
     }
 
     private lazy var contentStackView: UIStackView = .build { stackView in
@@ -92,7 +101,7 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
 
     private lazy var scrollContainer: UIStackView = .build { stackView in
         stackView.axis = .vertical
-        stackView.spacing = UX.padding
+        stackView.spacing = 6
     }
 
     private lazy var containerView: ShadowCardView = .build()
@@ -122,11 +131,12 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.dataSource = self
         tableView.delegate = self
 
+        let cardModel = ShadowCardViewModel(view: tableView, a11yId: "a11y")
+        containerView.configure(cardModel)
+
         listenForThemeChange(view)
         applyTheme()
-//
-//        let cardModel = ShadowCardViewModel(view: tableView, a11yId: "a11y")
-//        containerView.configure(cardModel)
+        setupNotifications(forObserver: self, observing: [.DynamicFontChanged])
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -138,63 +148,64 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         microSurveyHeaderView.translatesAutoresizingMaskIntoConstraints = false
 
         buttonStackView.addArrangedSubview(privacyPolicyButton)
+        buttonStackView.addArrangedSubview(UIView())
         buttonStackView.addArrangedSubview(submitButton)
-
-        scrollContainer.addArrangedSubview(tableView)
-        scrollContainer.addArrangedSubview(buttonStackView)
-        scrollView.addSubview(scrollContainer)
-        view.addSubviews(microSurveyHeaderView, scrollView)
+        scrollView.addSubview(containerView)
+//        scrollView.addSubview(buttonStackView)
+        view.addSubviews(microSurveyHeaderView, scrollView, buttonStackView)
         //        contentStackView.accessibilityElements = [homepageHeaderCell.contentView, privateMessageCardCell]
         //
         NSLayoutConstraint.activate(
             [
                 microSurveyHeaderView.topAnchor.constraint(
                     equalTo: view.topAnchor,
-                    constant: UX.padding
+                    constant: UX.padding.top
                 ),
                 microSurveyHeaderView.leadingAnchor.constraint(
                     equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-                    constant: UX.padding
+                    constant: UX.padding.leading
                 ),
                 microSurveyHeaderView.trailingAnchor.constraint(
                     equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                    constant: -UX.padding
+                    constant: UX.padding.trailing
                 ),
 
                 scrollView.topAnchor.constraint(
-                    equalTo: microSurveyHeaderView.bottomAnchor,
-                    constant: UX.padding
+                    equalTo: microSurveyHeaderView.bottomAnchor
                 ),
                 scrollView.leadingAnchor.constraint(
-                    equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-                    constant: UX.padding
+                    equalTo: view.safeAreaLayoutGuide.leadingAnchor
                 ),
                 scrollView.trailingAnchor.constraint(
+                    equalTo: view.safeAreaLayoutGuide.trailingAnchor
+                ),
+
+//                scrollView.bottomAnchor.constraint(
+//                    equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+//                    constant: UX.padding.bottom
+//                ),
+
+                containerView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: UX.padding.top),
+                containerView.leadingAnchor.constraint(
+                    equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                    constant: UX.padding.leading
+                ),
+                containerView.trailingAnchor.constraint(
                     equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                    constant: -UX.padding
+                    constant: UX.padding.trailing
                 ),
-
-                scrollView.bottomAnchor.constraint(
-                    equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                    constant: -UX.padding
-                ),
-
-                scrollContainer.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -UX.padding * 2),
-
-                scrollContainer.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
-                                                     constant: UX.padding),
-                scrollContainer.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor,
-                                                        constant: -UX.padding),
-
-                tableView.topAnchor.constraint(equalTo: scrollContainer.topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: scrollContainer.leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: scrollContainer.trailingAnchor),
-
                 tableView.heightAnchor.constraint(equalToConstant: tableView.contentSize.height + 88),
 
-                buttonStackView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 8),
-                buttonStackView.leadingAnchor.constraint(equalTo: scrollContainer.leadingAnchor, constant: UX.padding),
-                buttonStackView.trailingAnchor.constraint(equalTo: scrollContainer.trailingAnchor, constant: -UX.padding),
+                buttonStackView.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 8),
+                buttonStackView.leadingAnchor.constraint(
+                    equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                    constant: UX.padding.leading
+                ),
+                buttonStackView.trailingAnchor.constraint(
+                    equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                    constant: UX.padding.trailing
+                ),
+                buttonStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: UX.padding.bottom),
             ]
         )
     }
@@ -247,10 +258,26 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         privacyPolicyButton.applyTheme(theme: theme)
         closeButton.applyTheme(theme: theme)
         submitButton.applyTheme(theme: theme)
+        containerView.applyTheme(theme: theme)
     }
 
-    override func preferredContentSizeDidChange(forChildContentContainer container: any UIContentContainer) {
-        tableView.reloadData()
+    private func adjustLayout() {
+        let isA11ySize = UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory
+        if isA11ySize {
+            self.sheetPresentationController?.selectedDetentIdentifier = .large
+        } else {
+            self.sheetPresentationController?.selectedDetentIdentifier = .medium
+        }
+    }
+
+    func handleNotifications(_ notification: Notification) {
+        switch notification.name {
+        case .DynamicFontChanged:
+            adjustLayout()
+        case UIContentSizeCategory.didChangeNotification:
+            adjustLayout()
+        default: break
+        }
     }
 
     private lazy var questionLabel: UILabel = .build { label in
@@ -260,20 +287,28 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         label.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
-    let fakespotView: FakespotOptInCardView = .build()
+    private lazy var headerLabel: UILabel = .build { label in
+        label.font = FXFontStyles.Regular.headline.scaledFont()
+        label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+//        label.accessibilityIdentifier = a11y.title
+        label.accessibilityTraits.insert(.header)
+        label.text = "Thanks for the feedback!"
+    }
 
     @objc
     private func didTapSubmit() {
-        scrollContainer.removeAllArrangedViews()
-        buttonStackView.removeAllArrangedViews()
-        buttonStackView.addArrangedSubview(privacyPolicyButton)
+        let cardModel = ShadowCardViewModel(view: headerLabel, a11yId: "a11y")
+        containerView.configure(cardModel)
+        buttonStackView.removeArrangedView(submitButton)
         buttonStackView.addArrangedSubview(closeButton)
-        scrollContainer.addArrangedSubview(fakespotView)
-        scrollContainer.addArrangedSubview(buttonStackView)
         NSLayoutConstraint.activate(
             [
-                buttonStackView.topAnchor.constraint(equalTo: fakespotView.bottomAnchor, constant: 8),
-                ])
+                headerLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+                headerLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
+                headerLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
+                headerLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+            ])
     }
 
     @objc
@@ -284,6 +319,6 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
     @objc
     private func didTapPrivacyPolicy() {
         coordinator?.showPrivacyPolicy()
-        store.dispatch(MicroSurveyAction.showPrompt(windowUUID.context))
+        store.dispatch(MicroSurveyAction.dismissSurvey(windowUUID.context))
     }
 }

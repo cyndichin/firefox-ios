@@ -551,12 +551,14 @@ class BrowserViewController: UIViewController,
                 dismissFakespotIfNeeded()
             }
 
-            if state.microSurveyState.isSurveyShown {
+            if !state.microSurveyState.isPromptShown {
+                removeMicroSurveyPrompt()
+            } else if state.microSurveyState.isSurveyShown {
                 navigationHandler?.showMicroSurvey()
             } else if !state.microSurveyState.isSurveyShown {
                 navigationHandler?.dismissMicroSurvey()
             } else if state.microSurveyState.isPromptShown {
-                updateMicroSurveyVisibility(visible: true)
+                setupMicroSurvey()
             }
 
             if state.reloadWebView {
@@ -1149,6 +1151,7 @@ class BrowserViewController: UIViewController,
         // TODO: FXIOS-8990: Create Micro Survey Surface Manager to handle showing survey prompt
         if microSurvey != nil {
             removeMicroSurveyPrompt()
+            createMicroSurveyPrompt()
         }
 
         createMicroSurveyPrompt()
@@ -1176,13 +1179,17 @@ class BrowserViewController: UIViewController,
     }
 
     private func createMicroSurveyPrompt() {
-        let viewModel = MicroSurveyViewModel(openAction: {
-            // TODO: FXIOS-8895: Create Micro Survey Modal View
-        }) {
-            // TODO: FXIOS-8898: Setup Redux to handle open and dismissing modal
+        guard let microSurvey = MicroSurveyManager(windowUUID: windowUUID).showMicroSurveySurface() else {
+            return
         }
-
-        self.microSurvey = MicroSurveyPromptView(viewModel: viewModel)
+//        let viewModel = MicroSurveyViewModel(openAction: {
+//            // TODO: FXIOS-8895: Create Micro Survey Modal View
+//        }) {
+//            // TODO: FXIOS-8898: Setup Redux to handle open and dismissing modal
+//        }
+//
+//        self.microSurvey = MicroSurveyPromptView(viewModel: viewModel)
+        self.microSurvey = microSurvey
 
         updateMicroSurveyConstraints()
     }

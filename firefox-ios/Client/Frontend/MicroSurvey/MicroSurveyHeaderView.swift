@@ -7,7 +7,7 @@ import Common
 
 class MicroSurveyHeaderView: UIView, ThemeApplicable {
     struct UX {
-        static let closeButtonSize = CGSize(width: 35, height: 35)
+        static let closeButtonSize = CGSize(width: 30, height: 30)
         static let logoSize = CGSize(width: 24, height: 24)
         static let stackSpacing: CGFloat = 12
     }
@@ -33,7 +33,7 @@ class MicroSurveyHeaderView: UIView, ThemeApplicable {
     private lazy var headerView: UIStackView = .build { stack in
         stack.distribution = .fillProportionally
         stack.axis = .horizontal
-        stack.alignment = .top
+        stack.alignment = .center
         stack.spacing = UX.stackSpacing
     }
 

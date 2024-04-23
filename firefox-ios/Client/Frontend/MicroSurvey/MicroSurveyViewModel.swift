@@ -8,7 +8,7 @@ struct MicroSurveyViewModel {
     // TODO: FXIOS-8987 - Add Strings + FXIOS-8990 - Mobile Messaging Structure
     // Title + button text comes from mobile messaging; button text will also be hard coded in Strings file when defined
     var title: String = ""
-    var buttonText: String = ""
+    var buttonText: String = "Continue"
     var openAction: () -> Void
     var closeAction: () -> Void
 }

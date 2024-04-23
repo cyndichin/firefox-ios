@@ -134,7 +134,7 @@ struct BrowserViewControllerState: ScreenState, Equatable {
             return BrowserViewControllerState.resolveStateForUpdateSelectedTab(context, state: state)
         case MicroSurveyAction.showPrompt,
             MicroSurveyAction.dismissPrompt,
-            MicroSurveyAction.showSurvey,
+            MicroSurveyAction.pressedPromptButton,
             MicroSurveyAction.dismissSurvey:
             return BrowserViewControllerState(
                 searchScreenState: state.searchScreenState,
