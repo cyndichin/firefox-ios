@@ -57,6 +57,9 @@ struct GleanPlumbMessage {
     /// Embedding apps should not read from this directly.
     let style: StyleDataProtocol
 
+    /// The access point to ConfigData from Nimbus Messaging.
+    let configuration: ConfigData?
+
     /// The minimal data about a message that we should persist.
     ///
     /// Embedding apps should not read from this directly.

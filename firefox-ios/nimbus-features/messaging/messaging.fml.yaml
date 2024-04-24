@@ -86,6 +86,13 @@ features:
         description: 'Deprecated. Please use "experiment": "{experiment}" instead.'
         default: null
 
+      configurations:
+        description: >
+          A map of configuirations to supplement extra details needed for a message.
+        type: Map<ConfigName, ConfigData>
+        string-alias: ConfigName
+        default: {}
+
     defaults:
       - value:
           triggers:
@@ -147,6 +154,13 @@ objects:
         default:
           - ALWAYS
 
+      configuration:
+        type: Option<ConfigData>
+        description: >
+          The configuration as described in a
+          `MicroSurveyConfig` from the configuration table.
+        default: null
+
       except-if-any:
         type: List<TriggerName>
         description: >
@@ -181,6 +195,33 @@ objects:
           How many sessions will this message be shown to the user
           before it is expired.
         default: 5
+
+  MicroSurveyConfig:
+    description: >
+        Attributes relating to micro survey content.
+    fields:
+      target-feature:
+        type: String
+        description: >
+            The name of the feature the survey is for e.g. "Printing PDF".
+        default: "" # Should not be defaulted
+      icon:
+        description: >
+            The asset reference of the icon to use.
+        type: String
+        default: "" # Should not be null
+
+  ConfigData:
+    description: >
+      A set of buttons for the card. There can be up to two, but
+      there must be at least one.
+    fields:
+      microsurvey:
+        type: Option<MicroSurveyConfig>
+        description: >
+          The configuration for microsurvey.
+        default:
+          null
 
 enums:
   MessageSurfaceId:

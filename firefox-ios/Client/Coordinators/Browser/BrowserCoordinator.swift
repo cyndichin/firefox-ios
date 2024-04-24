@@ -284,7 +284,6 @@ class BrowserCoordinator: BaseCoordinator,
          coordinator.parentCoordinator = self
          add(child: coordinator)
          coordinator.start()
-         browser
          present(navigationController)
 //        let microSurveyCoordinator = makeMicroSurveyCoordinator()
 //        microSurveyCoordinator?.start()

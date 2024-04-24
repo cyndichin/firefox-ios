@@ -47,7 +47,7 @@ import:
                 surface: survey
                 style: SURVEY
                 trigger-if-all:
-                  - NEVER
+                  - ALWAYS
                 text: ResearchSurface/Body.Text.v112
                 button-label: ResearchSurface/PrimaryButton.Label.v112
                 action: OPEN_URL
@@ -60,7 +60,10 @@ import:
                 style: MICRO_SURVEY
                 trigger-if-all:
                   - ALWAYS
+                configuration:
+                  microsurvey:
+                    target-feature: "printing"
+                    icon: ""
                 title: ResearchSurface/Body.Text.v112
                 text: Default Browser/DefaultBrowserCard.Button.v2
                 button-label: "Take Survey"
-                action: MAKE_MICRO_SURVEY
