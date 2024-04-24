@@ -27,13 +27,19 @@ class MicroSurveyCoordinator: BaseCoordinator, FeatureFlaggable, MicroSurveyCoor
     func start() {
         let microSurveyViewController = MicroSurveyViewController(windowUUID: windowUUID)
         microSurveyViewController.coordinator = self
-        microSurveyViewController.sheetPresentationController?.detents = [.medium()]
+        microSurveyViewController.sheetPresentationController?.prefersGrabberVisible = true
+        
+        microSurveyViewController.sheetPresentationController?.detents = [.medium(), .large()]
         let controller = DismissableNavigationViewController(rootViewController: microSurveyViewController)
-        microSurveyViewController.sheetPresentationController?.selectedDetentIdentifier = .medium
+        controller.sheetPresentationController?.prefersGrabberVisible = true
+        controller.sheetPresentationController?.detents = [.medium(), .large()]
+        router.rootViewController?.sheetPresentationController?.prefersGrabberVisible = true
 
-        controller.sheetPresentationController?.selectedDetentIdentifier = .medium
+//        microSurveyViewController.sheetPresentationController?.selectedDetentIdentifier = .medium
+        microSurveyViewController.sheetPresentationController?.prefersGrabberVisible = true
+//        controller.sheetPresentationController?.selectedDetentIdentifier = .medium
 
-        router.setRootViewController(microSurveyViewController, hideBar: true)
+        router.setRootViewController(microSurveyViewController, hideBar: false)
     }
 
     func showPrivacyPolicy() {
