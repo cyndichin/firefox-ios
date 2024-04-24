@@ -121,6 +121,8 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         self.themeManager = themeManager
         self.notificationCenter = notificationCenter
         super.init(nibName: nil, bundle: nil)
+        self.navigationController?.sheetPresentationController?.prefersGrabberVisible = true
+        self.sheetPresentationController?.prefersGrabberVisible = true
         tableView.register(cellType: MicroSurveyTableViewCell.self)
         setupLayout()
     }

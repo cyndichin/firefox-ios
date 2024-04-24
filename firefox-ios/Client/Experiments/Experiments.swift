@@ -217,7 +217,7 @@ enum Experiments {
 
 extension Experiments {
     public static func createJexlHelper() -> NimbusMessagingHelperProtocol? {
-        let contextProvider = GleanPlumbContextProvider()
+           let contextProvider = GleanPlumbContextProvider()
         let context = contextProvider.createAdditionalDeviceContext()
         return try? sdk.createMessageHelper(additionalContext: context)
     }

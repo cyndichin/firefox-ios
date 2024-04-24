@@ -278,13 +278,13 @@ class BrowserCoordinator: BaseCoordinator,
          let navigationController = DismissableNavigationViewController()
          navigationController.sheetPresentationController?.detents = [.medium(), .large()]
 
-         navigationController.sheetPresentationController?.selectedDetentIdentifier = .medium
-
+//         navigationController.sheetPresentationController?.selectedDetentIdentifier = .medium
+         navigationController.sheetPresentationController?.prefersGrabberVisible = true
          let coordinator = MicroSurveyCoordinator(router: DefaultRouter(navigationController: navigationController), tabManager: tabManager)
          coordinator.parentCoordinator = self
          add(child: coordinator)
          coordinator.start()
-
+         browser
          present(navigationController)
 //        let microSurveyCoordinator = makeMicroSurveyCoordinator()
 //        microSurveyCoordinator?.start()

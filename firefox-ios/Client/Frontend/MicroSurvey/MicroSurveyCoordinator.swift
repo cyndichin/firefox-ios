@@ -34,7 +34,6 @@ class MicroSurveyCoordinator: BaseCoordinator, FeatureFlaggable, MicroSurveyCoor
         controller.sheetPresentationController?.prefersGrabberVisible = true
         controller.sheetPresentationController?.detents = [.medium(), .large()]
         router.rootViewController?.sheetPresentationController?.prefersGrabberVisible = true
-
 //        microSurveyViewController.sheetPresentationController?.selectedDetentIdentifier = .medium
         microSurveyViewController.sheetPresentationController?.prefersGrabberVisible = true
 //        controller.sheetPresentationController?.selectedDetentIdentifier = .medium
