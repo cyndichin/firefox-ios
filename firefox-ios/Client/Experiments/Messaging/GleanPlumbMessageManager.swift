@@ -323,7 +323,6 @@ class GleanPlumbMessageManager: GleanPlumbMessageManagerProtocol {
         lookupTables: Messaging
     ) -> Result<GleanPlumbMessage, CreateMessageError> {
         var action: String
-        var configuration: MicrosurveyConfig?
         if !message.isControl {
             // Guard against a message with a blank `text` property.
             guard !message.text.isEmpty else { return .failure(.malformed) }
@@ -339,10 +338,6 @@ class GleanPlumbMessageManager: GleanPlumbMessageManagerProtocol {
 
         // Ascertain a Message's style, to know priority and max impressions.
         guard let style = sanitizeStyle(message.style, table: lookupTables.styles) else { return .failure(.malformed) }
-//        if let config = message.configuration?.microsurvey {
-//            guard let configurations = sanitizeConfiguration(config, table: lookupTables.configurations) else { return .failure(.malformed) }
-//            configuration = configurations
-//        }
         guard let triggerIfAll = sanitizeTriggers(message.triggerIfAll, table: lookupTables.triggers) else {
             return .failure(.malformed)
         }
@@ -358,7 +353,6 @@ class GleanPlumbMessageManager: GleanPlumbMessageManagerProtocol {
                               triggerIfAll: triggerIfAll,
                               exceptIfAny: exceptIfAny,
                               style: style,
-                              configuration: configuration,
                               metadata: messageMetadata)
         )
     }
@@ -382,10 +376,6 @@ class GleanPlumbMessageManager: GleanPlumbMessageManagerProtocol {
     }
 
     private func sanitizeStyle(_ unsafeStyle: String, table: [String: StyleData]) -> StyleData? {
-        return table[unsafeStyle]
-    }
-
-    private func sanitizeConfiguration(_ unsafeStyle: String, table: [String: MicrosurveyConfig]) -> MicrosurveyConfig? {
         return table[unsafeStyle]
     }
 

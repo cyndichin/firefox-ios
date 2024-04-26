@@ -12,6 +12,7 @@ protocol MessageDataProtocol {
     var buttonLabel: String? { get }
     var experiment: String? { get }
     var actionParams: [String: String] { get }
+    var microsurveyConfig: MicrosurveyConfig? { get }
 }
 
 extension MessageData: MessageDataProtocol {}
@@ -56,9 +57,6 @@ struct GleanPlumbMessage {
     ///
     /// Embedding apps should not read from this directly.
     let style: StyleDataProtocol
-
-    /// The access point to ConfigData from Nimbus Messaging.
-    let configuration: MicrosurveyConfig?
 
     /// The minimal data about a message that we should persist.
     ///
@@ -108,6 +106,11 @@ extension GleanPlumbMessage {
     /// If this is `nil` then do not display a title.
     public var title: String? {
         data.title
+    }
+
+    /// The access point to MicrosurveyConfig from Nimbus Messaging.
+    public var microsurveyConfig: MicrosurveyConfig? {
+        data.microsurveyConfig
     }
 }
 

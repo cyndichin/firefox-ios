@@ -31,9 +31,9 @@ class MicroSurveyManager: MobileMessageSurfaceProtocol {
         guard let title = message?.title, let buttonText = message?.buttonLabel, let text = message?.text else {
             return nil
         }
-        let options = message?.configuration?.options
-        let icon = message?.configuration?.icon
-        let targetFeature = message?.configuration?.targetFeature
+        let options = message?.microsurveyConfig?.options
+        let icon = message?.microsurveyConfig?.icon
+        let targetFeature = message?.microsurveyConfig?.targetFeature
 
         store.dispatch(MicroSurveyAction.showPrompt(windowUUID.context))
 
@@ -48,8 +48,6 @@ class MicroSurveyManager: MobileMessageSurfaceProtocol {
 //        handleMessageDisplayed()
         return MicroSurveyPromptView(viewModel: viewModel)
     }
-
-    private func 
 
     private func updateMessage() {
         guard message == nil else { return }
