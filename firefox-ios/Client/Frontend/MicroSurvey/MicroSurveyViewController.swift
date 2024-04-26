@@ -104,9 +104,7 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         stackView.spacing = 6
     }
 
-    private lazy var containerView: ShadowCardView = .build()
-
-    private let scrollViewContent: UIView = .build()
+    private lazy var containerView: UIView = .build()
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -133,9 +131,6 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.dataSource = self
         tableView.delegate = self
 
-        let cardModel = ShadowCardViewModel(view: tableView, a11yId: "a11y")
-        containerView.configure(cardModel)
-
         listenForThemeChange(view)
         applyTheme()
         setupNotifications(forObserver: self, observing: [.DynamicFontChanged])
@@ -152,7 +147,10 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         buttonStackView.addArrangedSubview(privacyPolicyButton)
         buttonStackView.addArrangedSubview(UIView())
         buttonStackView.addArrangedSubview(submitButton)
-        scrollView.addSubview(containerView)
+        containerView.addSubviews(tableView)
+        scrollContainer.addArrangedSubview(containerView)
+        scrollContainer.addArrangedSubview(buttonStackView)
+        scrollView.addSubview(scrollContainer)
 //        scrollView.addSubview(buttonStackView)
         view.addSubviews(microSurveyHeaderView, scrollView, buttonStackView)
         //        contentStackView.accessibilityElements = [homepageHeaderCell.contentView, privateMessageCardCell]
@@ -182,32 +180,44 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
                     equalTo: view.safeAreaLayoutGuide.trailingAnchor
                 ),
 
-//                scrollView.bottomAnchor.constraint(
-//                    equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-//                    constant: UX.padding.bottom
-//                ),
+                scrollView.bottomAnchor.constraint(
+                    equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                    constant: UX.padding.bottom
+                ),
 
-                containerView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: UX.padding.top),
-                containerView.leadingAnchor.constraint(
+                scrollContainer.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: UX.padding.top),
+                scrollContainer.leadingAnchor.constraint(
                     equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                     constant: UX.padding.leading
                 ),
-                containerView.trailingAnchor.constraint(
+                scrollContainer.trailingAnchor.constraint(
                     equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                     constant: UX.padding.trailing
                 ),
+                scrollContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: UX.padding.bottom),
                 tableView.heightAnchor.constraint(equalToConstant: tableView.contentSize.height + 88),
 
-                buttonStackView.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 8),
+                tableView.topAnchor.constraint(equalTo: containerView.topAnchor),
+                tableView.leadingAnchor.constraint(
+                    equalTo: containerView.leadingAnchor,
+                    constant: UX.padding.leading
+                ),
+                tableView.trailingAnchor.constraint(
+                    equalTo: containerView.trailingAnchor,
+                    constant: UX.padding.trailing
+                ),
+
+                tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+                
                 buttonStackView.leadingAnchor.constraint(
-                    equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                    equalTo: scrollContainer.leadingAnchor,
                     constant: UX.padding.leading
                 ),
                 buttonStackView.trailingAnchor.constraint(
-                    equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                    equalTo: scrollContainer.trailingAnchor,
                     constant: UX.padding.trailing
                 ),
-                buttonStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: UX.padding.bottom),
+                buttonStackView.bottomAnchor.constraint(equalTo: scrollContainer.bottomAnchor, constant: UX.padding.bottom),
             ]
         )
     }
