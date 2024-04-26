@@ -270,7 +270,7 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         privacyPolicyButton.applyTheme(theme: theme)
         closeButton.applyTheme(theme: theme)
         submitButton.applyTheme(theme: theme)
-        containerView.applyTheme(theme: theme)
+//        containerView.applyTheme(theme: theme)
     }
 
     private func adjustLayout() {
@@ -310,8 +310,7 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
 
     @objc
     private func didTapSubmit() {
-        let cardModel = ShadowCardViewModel(view: headerLabel, a11yId: "a11y")
-        containerView.configure(cardModel)
+
         buttonStackView.removeArrangedView(submitButton)
         buttonStackView.addArrangedSubview(closeButton)
         NSLayoutConstraint.activate(

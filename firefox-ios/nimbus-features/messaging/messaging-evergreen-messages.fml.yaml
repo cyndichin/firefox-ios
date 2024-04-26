@@ -60,10 +60,9 @@ import:
                 style: MICRO_SURVEY
                 trigger-if-all:
                   - ALWAYS
-                configuration:
-                  microsurvey:
-                    target-feature: "printing"
-                    icon: ""
+                microsurveyConfig:
+                    target-feature: print
+                    icon: print
                 title: ResearchSurface/Body.Text.v112
                 text: Default Browser/DefaultBrowserCard.Button.v2
                 button-label: "Take Survey"

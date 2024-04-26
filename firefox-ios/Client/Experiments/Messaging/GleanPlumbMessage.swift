@@ -58,7 +58,7 @@ struct GleanPlumbMessage {
     let style: StyleDataProtocol
 
     /// The access point to ConfigData from Nimbus Messaging.
-    let configuration: ConfigData?
+    let configuration: MicrosurveyConfig?
 
     /// The minimal data about a message that we should persist.
     ///

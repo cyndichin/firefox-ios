@@ -86,13 +86,6 @@ features:
         description: 'Deprecated. Please use "experiment": "{experiment}" instead.'
         default: null
 
-      configurations:
-        description: >
-          A map of configuirations to supplement extra details needed for a message.
-        type: Map<ConfigName, ConfigData>
-        string-alias: ConfigName
-        default: {}
-
     defaults:
       - value:
           triggers:
@@ -154,11 +147,9 @@ objects:
         default:
           - ALWAYS
 
-      configuration:
-        type: Option<ConfigData>
-        description: >
-          The configuration as described in a
-          `MicroSurveyConfig` from the configuration table.
+      microsurveyConfig:
+        type: Option<MicrosurveyConfig>
+        description: Optional configuration data for a microsurvey.
         default: null
 
       except-if-any:
@@ -196,34 +187,51 @@ objects:
           before it is expired.
         default: 5
 
-  MicroSurveyConfig:
+  MicrosurveyConfig:
     description: >
-        Attributes relating to micro survey content.
+        Attributes relating to microsurvey content.
     fields:
       target-feature:
-        type: String
+        type: TargetFeature
         description: >
             The name of the feature the survey is for e.g. "Printing PDF".
-        default: "" # Should not be defaulted
+        default: Unknown # Should not be defaulted
       icon:
+        type: IconName
         description: >
             The asset reference of the icon to use.
-        type: String
-        default: "" # Should not be null
-
-  ConfigData:
-    description: >
-      A set of buttons for the card. There can be up to two, but
-      there must be at least one.
-    fields:
-      microsurvey:
-        type: Option<MicroSurveyConfig>
-        description: >
-          The configuration for microsurvey.
+        default: Unknown # Should not be null
+      options:
+        description: The list of options to present to the user.
+        type: List<String>
         default:
-          null
+          - "Very Dissatisfied"
+          - "Dissatisfied"
+          - "Neutral"
+          - "Satisfied"
+          - "very Satisfied"
 
 enums:
+  TargetFeature:
+    description: >
+      For messaging, we would like to have a message tell us which target feature it is associated with.
+      This is a label that matches across both Android and iOS.
+    variants:
+      print:
+        description: This is tehe feature that .
+      Unknown:
+        description: A message has NOT declared its target feature.
+
+  IconName:
+    description: >
+      For messaging, we would like to have a message tell us which target feature it is associated with.
+      This is a label that matches across both Android and iOS.
+    variants:
+      print:
+        description: This is tehe feature that .
+      Unknown:
+        description: A message has NOT declared its target feature.
+
   MessageSurfaceId:
     description: >
       For messaging, we would like to have a message tell us which surface its associated with.
@@ -236,7 +244,7 @@ enums:
       notification:
         description: This is a local notification send to the user periodically with tips and updates.
       microsurvey:
-        description: This is a microsurvey that appears on top of the toolbar to the user.
+        description: This is a microsurvey that appears on top of the bottom toolbar to the user.
       Unknown:
         description: A message has NOT declared its target surface.
 

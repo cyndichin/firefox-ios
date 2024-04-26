@@ -323,7 +323,7 @@ class GleanPlumbMessageManager: GleanPlumbMessageManagerProtocol {
         lookupTables: Messaging
     ) -> Result<GleanPlumbMessage, CreateMessageError> {
         var action: String
-        var configuration: ConfigData?
+        var configuration: MicrosurveyConfig?
         if !message.isControl {
             // Guard against a message with a blank `text` property.
             guard !message.text.isEmpty else { return .failure(.malformed) }
@@ -385,7 +385,7 @@ class GleanPlumbMessageManager: GleanPlumbMessageManagerProtocol {
         return table[unsafeStyle]
     }
 
-    private func sanitizeConfiguration(_ unsafeStyle: String, table: [String: ConfigData]) -> ConfigData? {
+    private func sanitizeConfiguration(_ unsafeStyle: String, table: [String: MicrosurveyConfig]) -> MicrosurveyConfig? {
         return table[unsafeStyle]
     }
 

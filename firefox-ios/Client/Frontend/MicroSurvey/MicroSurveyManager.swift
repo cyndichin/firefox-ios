@@ -42,13 +42,12 @@ class MicroSurveyManager: MobileMessageSurfaceProtocol {
                 store.dispatch(MicroSurveyAction.dismissPrompt(self.windowUUID.context))
             }
 //        handleMessageDisplayed()
-        let int = messagingManager.getImpressionCount(for: .microsurvey)
         return MicroSurveyPromptView(viewModel: viewModel)
     }
 
     private func updateMessage() {
         guard message == nil else { return }
-        message = messagingManager.getNextMessage(for: .microsurvey)
+//        message = messagingManager.getNextMessage(for: .microsur)
     }
 
     // MARK: - MobileMessageSurfaceProtocol
