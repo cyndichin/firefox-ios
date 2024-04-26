@@ -54,7 +54,7 @@ class MicroSurveyPromptView: UIView, ThemeApplicable {
         stack.spacing = UX.headerStackSpacing
     }
 
-    private lazy var surveyButton: SecondaryRoundedButton = .build { button in
+    private lazy var surveyButton: PrimaryRoundedButton = .build { button in
         button.addTarget(self, action: #selector(self.openMicroSurvey), for: .touchUpInside)
     }
 
@@ -111,7 +111,7 @@ class MicroSurveyPromptView: UIView, ThemeApplicable {
 
     private func configure() {
         titleLabel.text = viewModel.title
-        let roundedButtonViewModel = SecondaryRoundedButtonViewModel(
+        let roundedButtonViewModel = PrimaryRoundedButtonViewModel(
             title: viewModel.buttonText,
             a11yIdentifier: AccessibilityIdentifiers.MicroSurvey.Prompt.takeSurveyButton
         )

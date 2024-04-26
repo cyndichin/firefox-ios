@@ -67,22 +67,7 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     private lazy var submitButton: PrimaryRoundedButton = .build { button in
-        let viewModel = PrimaryRoundedButtonViewModel(
-            title: "Submit",
-            a11yIdentifier: "a11y"
-        )
-        button.configure(viewModel: viewModel)
         button.addTarget(self, action: #selector(self.didTapSubmit), for: .touchUpInside)
-    }
-
-    private lazy var closeButton: PrimaryRoundedButton = .build { button in
-        let viewModel = PrimaryRoundedButtonViewModel(
-            title: "Close",
-            a11yIdentifier: "a11y"
-        )
-        button.configure(viewModel: viewModel)
-        button.addTarget(self, action: #selector(self.didTapClose), for: .touchUpInside)
-        button.setContentHuggingPriority(.required, for: .horizontal)
     }
 
     private lazy var buttonStackView: UIStackView = .build { stackView in
@@ -123,6 +108,12 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         self.sheetPresentationController?.prefersGrabberVisible = true
         tableView.register(cellType: MicroSurveyTableViewCell.self)
         setupLayout()
+
+        let viewModel = PrimaryRoundedButtonViewModel(
+            title: "Submit",
+            a11yIdentifier: "a11y"
+        )
+        submitButton.configure(viewModel: viewModel)
     }
 
     override func viewDidLoad() {
@@ -145,13 +136,11 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         microSurveyHeaderView.translatesAutoresizingMaskIntoConstraints = false
 
         buttonStackView.addArrangedSubview(privacyPolicyButton)
-        buttonStackView.addArrangedSubview(UIView())
         buttonStackView.addArrangedSubview(submitButton)
         containerView.addSubviews(tableView)
         scrollContainer.addArrangedSubview(containerView)
         scrollContainer.addArrangedSubview(buttonStackView)
         scrollView.addSubview(scrollContainer)
-//        scrollView.addSubview(buttonStackView)
         view.addSubviews(microSurveyHeaderView, scrollView, buttonStackView)
         //        contentStackView.accessibilityElements = [homepageHeaderCell.contentView, privateMessageCardCell]
         //
@@ -208,7 +197,8 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
                 ),
 
                 tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-                
+
+                buttonStackView.topAnchor.constraint(equalTo: containerView.bottomAnchor),
                 buttonStackView.leadingAnchor.constraint(
                     equalTo: scrollContainer.leadingAnchor,
                     constant: UX.padding.leading
@@ -268,18 +258,16 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
 
         microSurveyHeaderView.applyTheme(theme: theme)
         privacyPolicyButton.applyTheme(theme: theme)
-        closeButton.applyTheme(theme: theme)
         submitButton.applyTheme(theme: theme)
-//        containerView.applyTheme(theme: theme)
     }
 
     private func adjustLayout() {
-        let isA11ySize = UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory
-        if isA11ySize {
-            self.sheetPresentationController?.selectedDetentIdentifier = .large
-        } else {
-            self.sheetPresentationController?.selectedDetentIdentifier = .medium
-        }
+//        let isA11ySize = UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory
+//        if isA11ySize {
+//            self.sheetPresentationController?.selectedDetentIdentifier = .large
+//        } else {
+//            self.sheetPresentationController?.selectedDetentIdentifier = .medium
+//        }
     }
 
     func handleNotifications(_ notification: Notification) {
@@ -310,9 +298,6 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
 
     @objc
     private func didTapSubmit() {
-
-        buttonStackView.removeArrangedView(submitButton)
-        buttonStackView.addArrangedSubview(closeButton)
         NSLayoutConstraint.activate(
             [
                 headerLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
