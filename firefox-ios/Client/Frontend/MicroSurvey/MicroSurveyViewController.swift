@@ -25,7 +25,6 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
 
         // Add empty footer view to prevent separators from being drawn past the last item.
         tableView.tableFooterView = UIView()
-        tableView.layer.cornerRadius = 16.0
         tableView.register(MicroSurveyTableHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: MicroSurveyTableHeaderView.cellIdentifier)
         tableView.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -36,7 +35,7 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
 
     private lazy var cardContainer: ShadowCardView = .build()
 
-    var options = ["Very Dissatisfied", "Dissatisfied", "Neutral", "Satisfied", "Very Satisfied"]
+    var options = ["Very Satisfied", "Satisfied", "Neutral", "Dissastified", "Very Dissastified"]
 
     private enum UX {
         static let titleStackSpacing: CGFloat = 8
@@ -70,12 +69,6 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         button.addTarget(self, action: #selector(self.didTapSubmit), for: .touchUpInside)
     }
 
-    private lazy var buttonStackView: UIStackView = .build { stackView in
-        stackView.distribution = .fillProportionally
-        stackView.axis = .horizontal
-        stackView.alignment = .bottom
-    }
-
     private lazy var contentStackView: UIStackView = .build { stackView in
         stackView.distribution = .fill
         stackView.spacing = 10
@@ -86,10 +79,13 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
 
     private lazy var scrollContainer: UIStackView = .build { stackView in
         stackView.axis = .vertical
-        stackView.spacing = 6
+        stackView.spacing = 21
     }
 
-    private lazy var containerView: UIView = .build()
+    private lazy var containerView: UIView = .build { view in
+        view.layer.cornerRadius = 16.0
+        view.backgroundColor = .white
+    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -108,12 +104,6 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         self.sheetPresentationController?.prefersGrabberVisible = true
         tableView.register(cellType: MicroSurveyTableViewCell.self)
         setupLayout()
-
-        let viewModel = PrimaryRoundedButtonViewModel(
-            title: "Submit",
-            a11yIdentifier: "a11y"
-        )
-        submitButton.configure(viewModel: viewModel)
     }
 
     override func viewDidLoad() {
@@ -132,16 +122,20 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     private func setupLayout() {
+        let viewModel = PrimaryRoundedButtonViewModel(
+            title: "Submit",
+            a11yIdentifier: "a11y"
+        )
+        submitButton.configure(viewModel: viewModel)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         microSurveyHeaderView.translatesAutoresizingMaskIntoConstraints = false
 
-        buttonStackView.addArrangedSubview(privacyPolicyButton)
-        buttonStackView.addArrangedSubview(submitButton)
         containerView.addSubviews(tableView)
         scrollContainer.addArrangedSubview(containerView)
-        scrollContainer.addArrangedSubview(buttonStackView)
+        scrollContainer.addArrangedSubview(submitButton)
+        scrollContainer.addArrangedSubview(privacyPolicyButton)
         scrollView.addSubview(scrollContainer)
-        view.addSubviews(microSurveyHeaderView, scrollView, buttonStackView)
+        view.addSubviews(microSurveyHeaderView, scrollView)
         //        contentStackView.accessibilityElements = [homepageHeaderCell.contentView, privateMessageCardCell]
         //
         NSLayoutConstraint.activate(
@@ -197,17 +191,7 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
                 ),
 
                 tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-
-                buttonStackView.topAnchor.constraint(equalTo: containerView.bottomAnchor),
-                buttonStackView.leadingAnchor.constraint(
-                    equalTo: scrollContainer.leadingAnchor,
-                    constant: UX.padding.leading
-                ),
-                buttonStackView.trailingAnchor.constraint(
-                    equalTo: scrollContainer.trailingAnchor,
-                    constant: UX.padding.trailing
-                ),
-                buttonStackView.bottomAnchor.constraint(equalTo: scrollContainer.bottomAnchor, constant: UX.padding.bottom),
+                privacyPolicyButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
             ]
         )
     }
@@ -255,7 +239,8 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
     func applyTheme() {
         let theme = themeManager.currentTheme(for: windowUUID)
         view.backgroundColor = theme.colors.layer1
-
+        containerView.layer.borderColor = theme.colors.borderPrimary.cgColor
+        containerView.layer.borderWidth = 1
         microSurveyHeaderView.applyTheme(theme: theme)
         privacyPolicyButton.applyTheme(theme: theme)
         submitButton.applyTheme(theme: theme)
@@ -298,6 +283,9 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
 
     @objc
     private func didTapSubmit() {
+        microSurveyHeaderView.configure(with: "Survey complete")
+        tableView
+        containerView.addSubview(headerLabel)
         NSLayoutConstraint.activate(
             [
                 headerLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
