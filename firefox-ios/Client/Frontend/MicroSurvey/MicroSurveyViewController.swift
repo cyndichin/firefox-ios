@@ -284,6 +284,7 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
 //        label.accessibilityIdentifier = a11y.title
         label.accessibilityTraits.insert(.header)
         label.text = "Thanks for the feedback!"
+        label.textAlignment = .center
     }
 
     @objc
@@ -296,15 +297,14 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         containerView.addSubview(headerLabel)
         NSLayoutConstraint.activate(
             [
-                confirmationImage.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
-                confirmationImage.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
-                confirmationImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
-                confirmationImage.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+                confirmationImage.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
+                confirmationImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+                confirmationImage.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
 
-                headerLabel.topAnchor.constraint(equalTo: confirmationImage.bottomAnchor, constant: 8),
-                headerLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
-                headerLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
-                headerLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+                headerLabel.topAnchor.constraint(equalTo: confirmationImage.bottomAnchor, constant: 10),
+                headerLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
+                headerLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+                headerLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             ])
     }
 
