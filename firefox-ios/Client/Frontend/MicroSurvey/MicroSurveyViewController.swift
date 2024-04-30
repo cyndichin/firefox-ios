@@ -58,7 +58,8 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
             title: "Privacy notice",
             a11yIdentifier: "a11y",
             font: FXFontStyles.Regular.caption2.scaledFont(),
-            contentInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+            contentInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0),
+            contentHorizontalAlignment: .center
         )
         button.configure(viewModel: privacyPolicyButtonViewModel)
         button.addTarget(self, action: #selector(self.didTapPrivacyPolicy), for: .touchUpInside)
@@ -164,7 +165,7 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
                 ),
 
                 scrollView.bottomAnchor.constraint(
-                    equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                    equalTo: view.bottomAnchor,
                     constant: UX.padding.bottom
                 ),
 
@@ -190,8 +191,7 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
                     constant: UX.padding.trailing
                 ),
 
-                tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-                privacyPolicyButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
+                tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
             ]
         )
     }
@@ -272,8 +272,13 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
         label.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
+    private lazy var confirmationImage: UIImageView = .build { imageView in
+        imageView.image = UIImage(imageLiteralResourceName: ImageIdentifiers.firefoxPlaceholder)
+        imageView.contentMode = .scaleAspectFit
+    }
+
     private lazy var headerLabel: UILabel = .build { label in
-        label.font = FXFontStyles.Regular.headline.scaledFont()
+        label.font = FXFontStyles.Regular.title3.scaledFont()
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
 //        label.accessibilityIdentifier = a11y.title
@@ -284,11 +289,19 @@ class MicroSurveyViewController: UIViewController, UITableViewDataSource, UITabl
     @objc
     private func didTapSubmit() {
         microSurveyHeaderView.configure(with: "Survey complete")
-        tableView
+        tableView.removeFromSuperview()
+        submitButton.removeFromSuperview()
+
+        containerView.addSubview(confirmationImage)
         containerView.addSubview(headerLabel)
         NSLayoutConstraint.activate(
             [
-                headerLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+                confirmationImage.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+                confirmationImage.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
+                confirmationImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
+                confirmationImage.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+
+                headerLabel.topAnchor.constraint(equalTo: confirmationImage.bottomAnchor, constant: 8),
                 headerLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
                 headerLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
                 headerLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),

@@ -41,7 +41,7 @@ public struct ImageIdentifiers {
     public static let starHalf = "starHalf"
     public static let subtract = "subtract"
     public static let syncOpenTab = "sync_open_tab"
-
+    public static let firefoxPlaceholder = "firefoxPlaceholder"
     public struct Onboarding {
         public struct HeaderImages {
             public static let welcomev106 = "onboardingWelcome"
